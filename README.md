@@ -3,3 +3,6 @@ Identification of microbial taxa along a stress tolerance-competitive dominance 
 Author: William Argiroff
 
 Developed to identify ecologically relevant synthetic communities to test microbial role in Populus stress tolerance.
+
+Dependencies
+mothur v 1.48.0
