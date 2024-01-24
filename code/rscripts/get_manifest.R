@@ -79,9 +79,9 @@ BC_16S_paths <- list.files(
   
 ) %>%
   
-  map_chr(., .f = format_path) %>%
+  map_chr(., .f = normalizePath) %>%
   
-  map_chr(., .f = normalizePath)
+  map_chr(., .f = format_path)
 
 # BC 16S output
 BC_16S_manifest_name <- list.files(
@@ -135,9 +135,9 @@ BC_ITS_paths <- list.files(
   
 ) %>%
   
-  map_chr(., .f = format_path) %>%
+  map_chr(., .f = normalizePath) %>%
   
-  map_chr(., .f = normalizePath)
+  map_chr(., .f = format_path)
 
 # BC ITS output
 BC_ITS_manifest_name <- list.files(
@@ -202,9 +202,9 @@ DAVIS_16S_paths <- list.files(
   
 ) %>%
   
-  map_chr(., .f = format_path2) %>%
+  map_chr(., .f = normalizePath) %>%
   
-  map_chr(., .f = normalizePath)
+  map_chr(., .f = format_path2)
 
 # DAVIS 16S output
 DAVIS_16S_manifest_name <- list.files(
@@ -258,9 +258,9 @@ DAVIS_ITS_paths <- list.files(
   
 ) %>%
   
-  map_chr(., .f = format_path2) %>%
+  map_chr(., .f = normalizePath) %>%
   
-  map_chr(., .f = normalizePath)
+  map_chr(., .f = format_path2)
 
 # DAVIS ITS output
 DAVIS_ITS_manifest_name <- list.files(
@@ -314,9 +314,9 @@ BOARD_16S_paths <- list.files(
   
 ) %>%
   
-  map_chr(., .f = format_path2) %>%
+  map_chr(., .f = normalizePath) %>%
   
-  map_chr(., .f = normalizePath)
+  map_chr(., .f = format_path2)
 
 # BOARD 16S output
 BOARD_16S_manifest_name <- list.files(
@@ -370,9 +370,9 @@ BOARD_ITS_paths <- list.files(
   
 ) %>%
   
-  map_chr(., .f = format_path2) %>%
+  map_chr(., .f = normalizePath) %>%
   
-  map_chr(., .f = normalizePath)
+  map_chr(., .f = format_path2)
 
 # BOARD ITS output
 BOARD_ITS_manifest_name <- list.files(
