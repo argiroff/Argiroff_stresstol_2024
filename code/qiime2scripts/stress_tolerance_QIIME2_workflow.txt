@@ -1,0 +1,208 @@
+############
+#### BC ####
+############
+#
+#### 16S ####
+#
+# 1. Make manifest files using make_manifest_files.Rmd (2023-07-12)
+#
+# 2. Import (2023-07-12)
+sh BC_16S/BC_QIIME2_16S_1_stress_import.txt
+#
+# 3. Summarize, pre Cutadapt (2023-07-12)
+sh BC_16S/BC_QIIME2_16S_2_stress_summary_pre_cut.txt
+#
+# 4. Cutadapt (2023-07-12)
+sh BC_16S/BC_QIIME2_16S_3_stress_cutadapt.txt
+#
+# 5. Summarize, post Cutadapt (2023-07-12)
+sh BC_16S/BC_QIIME2_16S_4_stress_summary_post_cut.txt
+#
+# 6. DADA2 (2023-07-12)
+sh BC_16S/BC_QIIME2_16S_5_stress_DADA2.txt
+#
+# 7. DADA2 summary data (2023-07-16)
+sh BC_16S/BC_QIIME2_16S_6_stress_DADA2_summary.txt
+#
+# 8. Merge ASV and taxonomy files (2023-07-16)
+sh BC_16S/BC_QIIME2_16S_7_stress_merge.txt
+#
+9. Assign taxonomy (2023-07-16 to 2023-07-17)
+sh BC_16S/BC_QIIME2_16S_8_stress_assign_taxonomy.txt
+#
+#### ITS ####
+#
+# 1. Make manifest files using make_manifest_files.Rmd (2023-07-12)
+#
+# 2. Import
+sh BC_ITS/BC_QIIME2_ITS_1_stress_import.txt (2023-07-13)
+#
+# 3. Summarize, pre ITSxpress (2023-07-13)
+sh BC_ITS/BC_QIIME2_ITS_2_stress_summary_pre_cut.txt
+#
+# 4. Remove samples with <100 reads, and re-import (samples had sufficient reads; 2023-07-13)
+sh BC_ITS/BC_QIIME2_ITS_3_stress_import_post.txt
+#
+# 5. Summarize, post sample removal; NA (2023-07-13)
+#
+# 6. ITSxpress (2023-07-13 to 2023-07-16)
+sh BC_ITS/BC_QIIME2_ITS_4_stress_ITSxpress.txt
+#
+# 7. Summarize, post ITSxpress (2023-07-16)
+sh BC_ITS/BC_QIIME2_ITS_5_stress_summary_post_ITSxpress.txt
+#
+# 8. DADA2 (2023-07-16)
+sh BC_ITS/BC_QIIME2_ITS_6_stress_DADA2.txt
+#
+# 9. Summarize, post DADA2 (2023-07-16)
+sh BC_ITS/BC_QIIME2_ITS_7_stress_DADA2_summary.txt
+#
+# 10. Merge ASV and taxonomy files (2023-07-16)
+sh BC_ITS/BC_QIIME2_ITS_8_stress_merge.txt
+#
+# 11. Assign taxonomy (2023-07-16)
+sh BC_ITS/BC_QIIME2_ITS_9_stress_assign_taxonomy.txt
+#
+###############
+#### DAVIS ####
+###############
+#
+#### 16S ####
+#
+# 1. Make manifest files using make_manifest_files.Rmd (2023-07-24, remade 2023-07-24)
+#
+# 2. Import (2023-07-24)
+sh DAVIS_16S/DAVIS_QIIME2_16S_1_stress_import.txt
+#
+# 3. Summarize, pre Cutadapt (2023-07-24)
+sh DAVIS_16S/DAVIS_QIIME2_16S_2_stress_summary_pre_cut.txt
+#
+# 4. Remove samples with 0 reads, and re-import (2023-07-24)
+sh DAVIS_16S/DAVIS_QIIME2_16S_3_stress_import_post_drop.txt
+#
+# 5. Summarize, post sample removal (2023-07-24)
+sh DAVIS_16S/DAVIS_QIIME2_16S_4_stress_summary_post_drop.txt
+#
+# 6. Cutadapt (2023-07-24)
+sh DAVIS_16S/DAVIS_QIIME2_16S_5_stress_cutadapt.txt
+#
+# 7. Summarize, post Cutadapt (2023-07-24)
+sh DAVIS_16S/DAVIS_QIIME2_16S_6_stress_summary_post_cut.txt
+#
+# 8. DADA2 (2023-07-24 to 2023-07-25)
+sh DAVIS_16S/DAVIS_QIIME2_16S_7_stress_DADA2.txt
+#
+# 9. DADA2 summary data (2023-07-25)
+sh DAVIS_16S/DAVIS_QIIME2_16S_8_stress_DADA2_summary.txt
+#
+# 10. Merge ASV and taxonomy files (2023-07-25)
+sh DAVIS_16S/DAVIS_QIIME2_16S_9_stress_merge.txt
+#
+# 11. Assign taxonomy
+sh DAVIS_16S/DAVIS_QIIME2_16S_10_stress_assign_taxonomy.txt
+#
+#### ITS ####
+#
+# 1. Make manifest files using make_manifest_files.Rmd (2023-07-12)
+#
+# 2. Import
+sh DAVIS_ITS/DAVIS_QIIME2_ITS_1_stress_import.txt
+#
+# 3. Summarize, pre ITSxpress
+sh DAVIS_ITS/DAVIS_QIIME2_ITS_2_stress_summary_pre_cut.txt
+#
+# 4. Remove samples with <100 reads, and re-import post drop
+sh DAVIS_ITS/DAVIS_QIIME2_ITS_3_stress_import_post_drop.txt
+#
+# 5. Summarize, pre ITSxpress post drop
+sh DAVIS_ITS/DAVIS_QIIME2_ITS_4_stress_summary_post_drop.txt
+#
+# 6. ITSxpress
+sh DAVIS_ITS/DAVIS_QIIME2_ITS_5_stress_ITSxpress.txt
+#
+# 7. Summarize, post ITSxpress (2023-07-24)
+sh DAVIS_ITS/DAVIS_QIIME2_ITS_6_stress_summary_post_ITSxpress.txt
+#
+# 8. DADA2 (2023-07-24)
+sh DAVIS_ITS/DAVIS_QIIME2_ITS_7_stress_DADA2.txt
+#
+# 9. Summarize, post DADA2 (2023-07-24)
+sh DAVIS_ITS/DAVIS_QIIME2_ITS_8_stress_DADA2_summary.txt
+#
+# 10. Merge ASV and taxonomy files (2023-07-24)
+sh DAVIS_ITS/DAVIS_QIIME2_ITS_9_stress_merge.txt
+#
+# 11. Assign taxonomy (2023-07-24)
+sh DAVIS_ITS/DAVIS_QIIME2_ITS_10_stress_assign_taxonomy.txt
+
+###############
+#### BOARD ####
+###############
+#
+#### 16S ####
+#
+# 1. Gzip fastq files (2023-07-17)
+sh BOARD_16S/BOARD_16S_1_compress.txt
+#
+# 2. Make manifest files using make_manifest_files.Rmd (2023-07-17)
+#
+# 3. Import (2023-07-17)
+sh BOARD_16S/BOARD_QIIME2_16S_2_stress_import.txt
+#
+# 4. Summarize, pre Cutadapt (2023-07-17)
+sh BOARD_16S/BOARD_QIIME2_16S_3_stress_summary_pre_cut.txt
+#
+# 5. Cutadapt (2023-07-17)
+sh BOARD_16S/BOARD_QIIME2_16S_4_stress_cutadapt.txt
+#
+# 6. Summarize, post Cutadapt (2023-07-17)
+sh BOARD_16S/BOARD_QIIME2_16S_5_stress_summary_post_cut.txt
+#
+# 7. DADA2 (2023-07-17 to 2023-07-18)
+sh BOARD_16S/BOARD_QIIME2_16S_6_stress_DADA2.txt
+#
+# 8. DADA2 summary data (2023-07-18)
+sh BOARD_16S/BOARD_QIIME2_16S_7_stress_DADA2_summary.txt
+#
+# 8. Merge ASV and taxonomy files (2023-07-18)
+sh BOARD_16S/BOARD_QIIME2_16S_8_stress_merge.txt
+#
+9. Assign taxonomy (2023-07-18)
+sh BOARD_16S/BOARD_QIIME2_16S_9_stress_assign_taxonomy.txt
+#
+#### ITS ####
+#
+# 1. Gzip fastq files (2023-07-18)
+sh BOARD_ITS/BOARD_ITS_1_compress.txt
+#
+# 2. Make manifest files using make_manifest_files.Rmd (2023-07-18)
+#
+# 3. Import (2023-07-18)
+sh BOARD_ITS/BOARD_QIIME2_ITS_2_stress_import.txt
+#
+# 4. Summarize, pre ITSxpress (2023-07-18)
+sh BOARD_ITS/BOARD_QIIME2_ITS_3_stress_summary_pre_cut.txt
+#
+# 5. Remove samples with <100 reads, and re-import (samples had sufficient reads; 2023-07-18)
+sh BOARD_ITS/BOARD_QIIME2_ITS_4_stress_import_post.txt
+#
+# 6. Summarize, post sample removal; NA (2023-07-18)
+#
+# 7. ITSxpress (2023-07-21)
+sh BOARD_ITS/BOARD_QIIME2_ITS_5_stress_ITSxpress.txt
+#
+# 8. Summarize, post ITSxpress (2023-07-24)
+sh BOARD_ITS/BOARD_QIIME2_ITS_6_stress_summary_post_ITSxpress.txt
+#
+# 9. DADA2 (2023-07-24)
+sh BOARD_ITS/BOARD_QIIME2_ITS_7_stress_DADA2.txt
+#
+# 9. Summarize, post DADA2 (2023-07-24)
+sh BOARD_ITS/BOARD_QIIME2_ITS_8_stress_DADA2_summary.txt
+#
+# 10. Merge ASV and taxonomy files (2023-07-24)
+sh BOARD_ITS/BOARD_QIIME2_ITS_9_stress_merge.txt
+#
+# 11. Assign taxonomy (2023-07-24)
+sh BOARD_ITS/BOARD_QIIME2_ITS_10_stress_assign_taxonomy.txt
+#

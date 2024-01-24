@@ -1,0 +1,32 @@
+######################
+## BOARD ITS IMPORT ##
+######################
+#
+## 0. Make manifest files using R (make_manifest_files.Rmd)
+#
+## 1. QIIME2 environment
+source activate qiime2-2022.8
+#
+## 2. Import fastq (for each run)
+#
+qiime tools import \
+    --type 'SampleData[PairedEndSequencesWithQuality]' \
+    --input-path ~/Documents/Stress_tolerance/amplicon_data/manifest_files/BOARD/ITS/manifest_ITS_BS_SRA.txt \
+    --input-format PairedEndFastqManifestPhred33V2 \
+    --output-path ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BOARD/ITS/demux_BOARD_ITS_BS.qza
+#
+qiime tools import \
+    --type 'SampleData[PairedEndSequencesWithQuality]' \
+    --input-path ~/Documents/Stress_tolerance/amplicon_data/manifest_files/BOARD/ITS/manifest_ITS_RE_SRA.txt \
+    --input-format PairedEndFastqManifestPhred33V2 \
+    --output-path ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BOARD/ITS/demux_BOARD_ITS_RE.qza
+#
+qiime tools import \
+    --type 'SampleData[PairedEndSequencesWithQuality]' \
+    --input-path ~/Documents/Stress_tolerance/amplicon_data/manifest_files/BOARD/ITS/manifest_ITS_RH_SRA.txt \
+    --input-format PairedEndFastqManifestPhred33V2 \
+    --output-path ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BOARD/ITS/demux_BOARD_ITS_RH.qza
+#
+## 3. Deactivate QIIME2 environment
+conda deactivate
+#

@@ -1,0 +1,33 @@
+##################
+## BC 16S DADA2 ##
+##################
+#
+## 1. QIIME2 environment
+source activate qiime2-2022.8
+#
+# 2. DADA2
+#
+qiime dada2 denoise-paired \
+    --i-demultiplexed-seqs ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BOARD/16S/demux_BOARD_16S_BS_cutadapt/trimmed_sequences.qza \
+    --p-trunc-len-f 0 \
+    --p-trunc-len-r 0 \
+    --output-dir ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BOARD/16S/demux_BOARD_16S_BS_DADA_out \
+    --p-n-threads 10
+#
+qiime dada2 denoise-paired \
+    --i-demultiplexed-seqs ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BOARD/16S/demux_BOARD_16S_RE_cutadapt/trimmed_sequences.qza \
+    --p-trunc-len-f 0 \
+    --p-trunc-len-r 0 \
+    --output-dir ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BOARD/16S/demux_BOARD_16S_RE_DADA_out \
+    --p-n-threads 10
+#
+qiime dada2 denoise-paired \
+    --i-demultiplexed-seqs ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BOARD/16S/demux_BOARD_16S_RH_cutadapt/trimmed_sequences.qza \
+    --p-trunc-len-f 0 \
+    --p-trunc-len-r 0 \
+    --output-dir ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BOARD/16S/demux_BOARD_16S_RH_DADA_out \
+    --p-n-threads 10
+#
+## 3. Deactivate QIIME2 environment
+conda deactivate
+#

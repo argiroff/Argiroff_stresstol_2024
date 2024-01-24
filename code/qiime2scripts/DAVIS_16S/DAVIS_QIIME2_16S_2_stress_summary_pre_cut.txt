@@ -1,0 +1,44 @@
+#################################
+## DAVIS 16S SUMMARIZE PRE CUT ##
+#################################
+#
+## 1. QIIME2 environment
+source activate qiime2-2022.8
+#
+## 2. Summary visualization (for each run)
+#
+qiime demux summarize \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_Feb_BS1.qza \
+    --o-visualization ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_Feb_BS1_summary_pre_cut_viz.qzv
+#
+qiime demux summarize \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_Feb_RE1.qza \
+    --o-visualization ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_Feb_RE1_summary_pre_cut_viz.qzv
+#
+qiime demux summarize \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_Feb_RH_BS.qza \
+    --o-visualization ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_Feb_RH_BS_summary_pre_cut_viz.qzv
+#
+qiime demux summarize \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_Feb_RH1.qza \
+    --o-visualization ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_Feb_RH1_summary_pre_cut_viz.qzv
+#
+qiime demux summarize \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_July_BS1.qza \
+    --o-visualization ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_July_BS1_summary_pre_cut_viz.qzv
+#
+#qiime demux summarize \
+#    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_July_RE1.qza \
+#    --o-visualization ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_July_RE1_summary_pre_cut_viz.qzv
+#
+qiime demux summarize \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_July_RH_BS.qza \
+    --o-visualization ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_July_RH_BS_summary_pre_cut_viz.qzv
+#
+qiime demux summarize \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_July_RH1.qza \
+    --o-visualization ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_July_RH1_summary_pre_cut_viz.qzv
+#
+## 3. Deactivate QIIME2 environment
+conda deactivate
+#

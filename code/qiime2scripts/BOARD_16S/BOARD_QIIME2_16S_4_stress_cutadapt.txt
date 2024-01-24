@@ -1,0 +1,24 @@
+#####################
+## BC 16S CUTADAPT ##
+#####################
+#
+## 1. QIIME2 environment
+source activate qiime2-2022.8
+#
+## 2. Run cutadapt
+#
+qiime cutadapt trim-paired \
+    --i-demultiplexed-sequences ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BOARD/16S/demux_BOARD_16S_BS.qza \
+    --p-front-f GTGCCAGCMGCCGCGGTAA \
+    --p-front-f GTGCCAGCMGCWGCGGTAA \
+    --p-front-f GTGCCAGCMGCCGCGGTCA \
+    --p-front-f GTGKCAGCMGCCGCGGTAA \
+    --p-front-r GGACTACHVGGGTWTCTAAT \
+    --p-error-rate 0.1 \
+    --output-dir ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BOARD/16S/demux_BOARD_16S_BS_cutadapt \
+    --verbose
+#
+
+## 3. Deactivate QIIME2 environment
+conda deactivate
+#

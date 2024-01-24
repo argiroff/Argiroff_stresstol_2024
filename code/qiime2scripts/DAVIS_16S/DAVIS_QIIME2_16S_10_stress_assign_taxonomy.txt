@@ -1,0 +1,24 @@
+########################
+## DAVIS 16S TAXONOMY ##
+########################
+#
+## 1. QIIME2 environment
+source activate /opt/miniconda3/envs/qiime2-2022.8
+#
+## 2. Assign taxonomy
+#
+qiime feature-classifier classify-sklearn \
+    --i-classifier ~/Documents/Stress_tolerance/amplicon_data/working_qzas/taxonomy/16S/silva-138-99-515-806-nb-classifier.qza \
+    --i-reads ~/Documents/Stress_tolerance/amplicon_data/final_qzas/DAVIS/16S/DAVIS_16S_Feb_merged_repseqs.qza \
+    --output-dir  ~/Documents/Stress_tolerance/amplicon_data/final_qzas/DAVIS/16S/16S_Feb_extra \
+    --o-classification ~/Documents/Stress_tolerance/amplicon_data/final_qzas/DAVIS/16S/DAVIS_16S_Feb_taxonomy.qza
+#
+qiime feature-classifier classify-sklearn \
+    --i-classifier ~/Documents/Stress_tolerance/amplicon_data/working_qzas/taxonomy/16S/silva-138-99-515-806-nb-classifier.qza \
+    --i-reads ~/Documents/Stress_tolerance/amplicon_data/final_qzas/DAVIS/16S/DAVIS_16S_July_merged_repseqs.qza \
+    --output-dir  ~/Documents/Stress_tolerance/amplicon_data/final_qzas/DAVIS/16S/16S_July_extra \
+    --o-classification ~/Documents/Stress_tolerance/amplicon_data/final_qzas/DAVIS/16S/DAVIS_16S_July_taxonomy.qza
+#
+## 3. Deactivate QIIME2 environment
+conda deactivate
+#

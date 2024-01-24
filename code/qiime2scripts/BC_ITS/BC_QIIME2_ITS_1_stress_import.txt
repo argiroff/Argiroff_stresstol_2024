@@ -1,0 +1,74 @@
+###################
+## BC ITS IMPORT ##
+###################
+#
+## 0. Make manifest files using R (make_manifest_files.Rmd)
+#
+## 1. QIIME2 environment
+source activate qiime2-2022.8
+#
+## 2. Import fastq (for each run)
+#
+qiime tools import \
+    --type 'SampleData[PairedEndSequencesWithQuality]' \
+    --input-path ~/Documents/Stress_tolerance/amplicon_data/manifest_files/BC/ITS/manifest_BC_ITS_LE1.txt \
+    --input-format PairedEndFastqManifestPhred33V2 \
+    --output-path ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_LE1.qza
+#
+qiime tools import \
+    --type 'SampleData[PairedEndSequencesWithQuality]' \
+    --input-path ~/Documents/Stress_tolerance/amplicon_data/manifest_files/BC/ITS/manifest_BC_ITS_RE1.txt \
+    --input-format PairedEndFastqManifestPhred33V2 \
+    --output-path ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RE1.qza
+#
+qiime tools import \
+    --type 'SampleData[PairedEndSequencesWithQuality]' \
+    --input-path ~/Documents/Stress_tolerance/amplicon_data/manifest_files/BC/ITS/manifest_BC_ITS_RE2.txt \
+    --input-format PairedEndFastqManifestPhred33V2 \
+    --output-path ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RE2.qza
+#
+qiime tools import \
+    --type 'SampleData[PairedEndSequencesWithQuality]' \
+    --input-path ~/Documents/Stress_tolerance/amplicon_data/manifest_files/BC/ITS/manifest_BC_ITS_Redo1.txt \
+    --input-format PairedEndFastqManifestPhred33V2 \
+    --output-path ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_Redo1.qza
+#
+qiime tools import \
+    --type 'SampleData[PairedEndSequencesWithQuality]' \
+    --input-path ~/Documents/Stress_tolerance/amplicon_data/manifest_files/BC/ITS/manifest_BC_ITS_Redo2.txt \
+    --input-format PairedEndFastqManifestPhred33V2 \
+    --output-path ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_Redo2.qza
+#
+qiime tools import \
+    --type 'SampleData[PairedEndSequencesWithQuality]' \
+    --input-path ~/Documents/Stress_tolerance/amplicon_data/manifest_files/BC/ITS/manifest_BC_ITS_RH1.txt \
+    --input-format PairedEndFastqManifestPhred33V2 \
+    --output-path ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH1.qza
+#
+qiime tools import \
+    --type 'SampleData[PairedEndSequencesWithQuality]' \
+    --input-path ~/Documents/Stress_tolerance/amplicon_data/manifest_files/BC/ITS/manifest_BC_ITS_RH2.txt \
+    --input-format PairedEndFastqManifestPhred33V2 \
+    --output-path ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH2.qza
+#
+qiime tools import \
+    --type 'SampleData[PairedEndSequencesWithQuality]' \
+    --input-path ~/Documents/Stress_tolerance/amplicon_data/manifest_files/BC/ITS/manifest_BC_ITS_RH3.txt \
+    --input-format PairedEndFastqManifestPhred33V2 \
+    --output-path ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH3.qza
+#
+qiime tools import \
+    --type 'SampleData[PairedEndSequencesWithQuality]' \
+    --input-path ~/Documents/Stress_tolerance/amplicon_data/manifest_files/BC/ITS/manifest_BC_ITS_RH4.txt \
+    --input-format PairedEndFastqManifestPhred33V2 \
+    --output-path ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH4.qza
+#
+qiime tools import \
+    --type 'SampleData[PairedEndSequencesWithQuality]' \
+    --input-path ~/Documents/Stress_tolerance/amplicon_data/manifest_files/BC/ITS/manifest_BC_ITS_RH5.txt \
+    --input-format PairedEndFastqManifestPhred33V2 \
+    --output-path ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH5.qza
+#
+## 3. Deactivate QIIME2 environment
+conda deactivate
+#

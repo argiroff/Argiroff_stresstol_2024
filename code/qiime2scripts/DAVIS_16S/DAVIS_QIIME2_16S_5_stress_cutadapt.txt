@@ -1,0 +1,100 @@
+########################
+## DAVIS 16S CUTADAPT ##
+########################
+#
+## 1. QIIME2 environment
+source activate qiime2-2022.8
+#
+## 2. Run cutadapt
+#
+qiime cutadapt trim-paired \
+    --i-demultiplexed-sequences ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_Feb_BS1.qza \
+    --p-front-f GTGCCAGCMGCCGCGGTAA \
+    --p-front-f GTGCCAGCMGCWGCGGTAA \
+    --p-front-f GTGCCAGCMGCCGCGGTCA \
+    --p-front-f GTGKCAGCMGCCGCGGTAA \
+    --p-front-r GGACTACHVGGGTWTCTAAT \
+    --p-error-rate 0.1 \
+    --output-dir ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_Feb_BS1_cutadapt \
+    --verbose
+#
+qiime cutadapt trim-paired \
+    --i-demultiplexed-sequences ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_Feb_RE1.qza \
+    --p-front-f GTGCCAGCMGCCGCGGTAA \
+    --p-front-f GTGCCAGCMGCWGCGGTAA \
+    --p-front-f GTGCCAGCMGCCGCGGTCA \
+    --p-front-f GTGKCAGCMGCCGCGGTAA \
+    --p-front-r GGACTACHVGGGTWTCTAAT \
+    --p-error-rate 0.1 \
+    --output-dir ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_Feb_RE1_cutadapt \
+    --verbose
+#
+qiime cutadapt trim-paired \
+    --i-demultiplexed-sequences ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_Feb_RH_BS.qza \
+    --p-front-f GTGCCAGCMGCCGCGGTAA \
+    --p-front-f GTGCCAGCMGCWGCGGTAA \
+    --p-front-f GTGCCAGCMGCCGCGGTCA \
+    --p-front-f GTGKCAGCMGCCGCGGTAA \
+    --p-front-r GGACTACHVGGGTWTCTAAT \
+    --p-error-rate 0.1 \
+    --output-dir ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_Feb_RH_BS_cutadapt \
+    --verbose
+#
+qiime cutadapt trim-paired \
+    --i-demultiplexed-sequences ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_Feb_RH1.qza \
+    --p-front-f GTGCCAGCMGCCGCGGTAA \
+    --p-front-f GTGCCAGCMGCWGCGGTAA \
+    --p-front-f GTGCCAGCMGCCGCGGTCA \
+    --p-front-f GTGKCAGCMGCCGCGGTAA \
+    --p-front-r GGACTACHVGGGTWTCTAAT \
+    --p-error-rate 0.1 \
+    --output-dir ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_Feb_RH1_cutadapt \
+    --verbose
+#
+qiime cutadapt trim-paired \
+    --i-demultiplexed-sequences ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_July_BS1.qza \
+    --p-front-f GTGCCAGCMGCCGCGGTAA \
+    --p-front-f GTGCCAGCMGCWGCGGTAA \
+    --p-front-f GTGCCAGCMGCCGCGGTCA \
+    --p-front-f GTGKCAGCMGCCGCGGTAA \
+    --p-front-r GGACTACHVGGGTWTCTAAT \
+    --p-error-rate 0.1 \
+    --output-dir ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_July_BS1_cutadapt \
+    --verbose
+#
+#qiime cutadapt trim-paired \
+#    --i-demultiplexed-sequences ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_July_RE1.qza \
+#    --p-front-f GTGCCAGCMGCCGCGGTAA \
+#    --p-front-f GTGCCAGCMGCWGCGGTAA \
+#    --p-front-f GTGCCAGCMGCCGCGGTCA \
+#    --p-front-f GTGKCAGCMGCCGCGGTAA \
+#    --p-front-r GGACTACHVGGGTWTCTAAT \
+#    --p-error-rate 0.1 \
+#    --output-dir ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_July_RE1_cutadapt \
+#    --verbose
+#
+qiime cutadapt trim-paired \
+    --i-demultiplexed-sequences ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_July_RH_BS.qza \
+    --p-front-f GTGCCAGCMGCCGCGGTAA \
+    --p-front-f GTGCCAGCMGCWGCGGTAA \
+    --p-front-f GTGCCAGCMGCCGCGGTCA \
+    --p-front-f GTGKCAGCMGCCGCGGTAA \
+    --p-front-r GGACTACHVGGGTWTCTAAT \
+    --p-error-rate 0.1 \
+    --output-dir ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_July_RH_BS_cutadapt \
+    --verbose
+#
+qiime cutadapt trim-paired \
+    --i-demultiplexed-sequences ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_July_RH1.qza \
+    --p-front-f GTGCCAGCMGCCGCGGTAA \
+    --p-front-f GTGCCAGCMGCWGCGGTAA \
+    --p-front-f GTGCCAGCMGCCGCGGTCA \
+    --p-front-f GTGKCAGCMGCCGCGGTAA \
+    --p-front-r GGACTACHVGGGTWTCTAAT \
+    --p-error-rate 0.1 \
+    --output-dir ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/16S/demux_DAVIS_16S_July_RH1_cutadapt \
+    --verbose
+#
+## 3. Deactivate QIIME2 environment
+conda deactivate
+#

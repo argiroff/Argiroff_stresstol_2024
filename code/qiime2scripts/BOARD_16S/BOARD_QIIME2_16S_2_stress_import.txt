@@ -1,0 +1,32 @@
+######################
+## BOARD 16S IMPORT ##
+######################
+#
+## 0. Make manifest files using R (make_manifest_files.Rmd)
+#
+## 1. QIIME2 environment
+source activate qiime2-2022.8
+#
+## 2. Import fastq (for each run)
+#
+qiime tools import \
+    --type 'SampleData[PairedEndSequencesWithQuality]' \
+    --input-path ~/Documents/Stress_tolerance/amplicon_data/manifest_files/BOARD/16S/manifest_16S_BS_SRA.txt \
+    --input-format PairedEndFastqManifestPhred33V2 \
+    --output-path ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BOARD/16S/demux_BOARD_16S_BS.qza
+#
+qiime tools import \
+    --type 'SampleData[PairedEndSequencesWithQuality]' \
+    --input-path ~/Documents/Stress_tolerance/amplicon_data/manifest_files/BOARD/16S/manifest_16S_RE_SRA.txt \
+    --input-format PairedEndFastqManifestPhred33V2 \
+    --output-path ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BOARD/16S/demux_BOARD_16S_RE.qza
+#
+qiime tools import \
+    --type 'SampleData[PairedEndSequencesWithQuality]' \
+    --input-path ~/Documents/Stress_tolerance/amplicon_data/manifest_files/BOARD/16S/manifest_16S_RH_SRA.txt \
+    --input-format PairedEndFastqManifestPhred33V2 \
+    --output-path ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BOARD/16S/demux_BOARD_16S_RH.qza
+#
+## 3. Deactivate QIIME2 environment
+conda deactivate
+#

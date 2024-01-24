@@ -1,0 +1,42 @@
+#####################
+## BOARD ITS MERGE ##
+#####################
+#
+## 1. QIIME2 environment
+source activate /opt/miniconda3/envs/qiime2-2022.8
+#
+# 2. Merge ASV tables
+#
+qiime feature-table merge \
+    --i-tables ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/ITS/demux_DAVIS_ITS_Feb_BS1_DADA_out/table.qza \
+    --i-tables ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/ITS/demux_DAVIS_ITS_Feb_RE1_DADA_out/table.qza \
+    --i-tables ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/ITS/demux_DAVIS_ITS_Feb_RH_BS_DADA_out/table.qza \
+    --i-tables ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/ITS/demux_DAVIS_ITS_Feb_RH1_DADA_out/table.qza \
+    --o-merged-table ~/Documents/Stress_tolerance/amplicon_data/final_qzas/DAVIS/ITS/DAVIS_ITS_Feb_merged_table.qza
+#
+qiime feature-table merge \
+    --i-tables ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/ITS/demux_DAVIS_ITS_July_BS1_DADA_out/table.qza \
+    --i-tables ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/ITS/demux_DAVIS_ITS_July_RE1_DADA_out/table.qza \
+    --i-tables ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/ITS/demux_DAVIS_ITS_July_RH_BS_DADA_out/table.qza \
+    --i-tables ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/ITS/demux_DAVIS_ITS_July_RH1_DADA_out/table.qza \
+    --o-merged-table ~/Documents/Stress_tolerance/amplicon_data/final_qzas/DAVIS/ITS/DAVIS_ITS_July_merged_table.qza
+#
+# 3. Merge representative sequences
+#
+qiime feature-table merge-seqs \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/ITS/demux_DAVIS_ITS_Feb_BS1_DADA_out/representative_sequences.qza \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/ITS/demux_DAVIS_ITS_Feb_RE1_DADA_out/representative_sequences.qza \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/ITS/demux_DAVIS_ITS_Feb_RH_BS_DADA_out/representative_sequences.qza \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/ITS/demux_DAVIS_ITS_Feb_RH1_DADA_out/representative_sequences.qza \
+    --o-merged-data ~/Documents/Stress_tolerance/amplicon_data/final_qzas/DAVIS/ITS/DAVIS_ITS_Feb_merged_repseqs.qza
+#
+qiime feature-table merge-seqs \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/ITS/demux_DAVIS_ITS_July_BS1_DADA_out/representative_sequences.qza \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/ITS/demux_DAVIS_ITS_July_RE1_DADA_out/representative_sequences.qza \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/ITS/demux_DAVIS_ITS_July_RH_BS_DADA_out/representative_sequences.qza \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/DAVIS/ITS/demux_DAVIS_ITS_July_RH1_DADA_out/representative_sequences.qza \
+    --o-merged-data ~/Documents/Stress_tolerance/amplicon_data/final_qzas/DAVIS/ITS/DAVIS_ITS_July_merged_repseqs.qza
+#
+## 4. Deactivate QIIME2 environment
+conda deactivate
+#

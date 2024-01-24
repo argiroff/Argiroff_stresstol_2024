@@ -1,0 +1,8 @@
+########################
+## BOARD ITS COMPRESS ##
+########################
+#
+gzip ~/Documents/Stress_tolerance/amplicon_data/raw_fastq/BOARD/ITS/ITS_BS_SRA/*.fastq
+gzip ~/Documents/Stress_tolerance/amplicon_data/raw_fastq/BOARD/ITS/ITS_RE_SRA/*.fastq
+gzip ~/Documents/Stress_tolerance/amplicon_data/raw_fastq/BOARD/ITS/ITS_RH_SRA/*.fastq
+#

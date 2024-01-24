@@ -1,0 +1,82 @@
+##################
+## BC ITS DADA2 ##
+##################
+#
+## 1. QIIME2 environment
+source activate qiime2-2022.8
+#
+# 2. DADA2
+#
+qiime dada2 denoise-paired \
+    --i-demultiplexed-seqs ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_LE1_trimmed.qza \
+    --p-trunc-len-f 0 \
+    --p-trunc-len-r 0 \
+    --output-dir ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_LE1_DADA_out \
+    --p-n-threads 10
+#
+qiime dada2 denoise-paired \
+    --i-demultiplexed-seqs ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RE1_trimmed.qza \
+    --p-trunc-len-f 0 \
+    --p-trunc-len-r 0 \
+    --output-dir ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RE1_DADA_out \
+    --p-n-threads 10
+#
+qiime dada2 denoise-paired \
+    --i-demultiplexed-seqs ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RE2_trimmed.qza \
+    --p-trunc-len-f 0 \
+    --p-trunc-len-r 0 \
+    --output-dir ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RE2_DADA_out \
+    --p-n-threads 10
+#
+qiime dada2 denoise-paired \
+    --i-demultiplexed-seqs ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_Redo1_trimmed.qza \
+    --p-trunc-len-f 0 \
+    --p-trunc-len-r 0 \
+    --output-dir ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_Redo1_DADA_out \
+    --p-n-threads 10
+#
+qiime dada2 denoise-paired \
+    --i-demultiplexed-seqs ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_Redo2_trimmed.qza \
+    --p-trunc-len-f 0 \
+    --p-trunc-len-r 0 \
+    --output-dir ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_Redo2_DADA_out \
+    --p-n-threads 10
+#
+qiime dada2 denoise-paired \
+    --i-demultiplexed-seqs ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH1_trimmed.qza \
+    --p-trunc-len-f 0 \
+    --p-trunc-len-r 0 \
+    --output-dir ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH1_DADA_out \
+    --p-n-threads 10
+#
+qiime dada2 denoise-paired \
+    --i-demultiplexed-seqs ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH2_trimmed.qza \
+    --p-trunc-len-f 0 \
+    --p-trunc-len-r 0 \
+    --output-dir ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH2_DADA_out \
+    --p-n-threads 10
+#
+qiime dada2 denoise-paired \
+    --i-demultiplexed-seqs ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH3_trimmed.qza \
+    --p-trunc-len-f 0 \
+    --p-trunc-len-r 0 \
+    --output-dir ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH3_DADA_out \
+    --p-n-threads 10
+#
+qiime dada2 denoise-paired \
+    --i-demultiplexed-seqs ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH4_trimmed.qza \
+    --p-trunc-len-f 0 \
+    --p-trunc-len-r 0 \
+    --output-dir ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH4_DADA_out \
+    --p-n-threads 10
+#
+qiime dada2 denoise-paired \
+    --i-demultiplexed-seqs ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH5_trimmed.qza \
+    --p-trunc-len-f 0 \
+    --p-trunc-len-r 0 \
+    --output-dir ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH5_DADA_out \
+    --p-n-threads 10
+#
+## 3. Deactivate QIIME2 environment
+conda deactivate
+#

@@ -1,0 +1,24 @@
+#############################
+## BOARD ITS SUMMARY DADA2 ##
+#############################
+#
+## 1. QIIME2 environment
+source activate qiime2-2022.8
+#
+# 2. Metadata
+#
+qiime metadata tabulate \
+    --m-input-file ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BOARD/ITS/demux_BOARD_ITS_BS_DADA_out/denoising_stats.qza \
+    --o-visualization ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BOARD/ITS/demux_BOARD_ITS_BS_DADA_out/BOARD_ITS_BS_denoising_stats.qzv
+#
+qiime metadata tabulate \
+    --m-input-file ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BOARD/ITS/demux_BOARD_ITS_RE_DADA_out/denoising_stats.qza \
+    --o-visualization ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BOARD/ITS/demux_BOARD_ITS_RE_DADA_out/BOARD_ITS_RE_denoising_stats.qzv
+#
+qiime metadata tabulate \
+    --m-input-file ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BOARD/ITS/demux_BOARD_ITS_RH_DADA_out/denoising_stats.qza \
+    --o-visualization ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BOARD/ITS/demux_BOARD_ITS_RH_DADA_out/BOARD_ITS_RH_denoising_stats.qzv
+#
+## 3. Deactivate QIIME2 environment
+conda deactivate
+#

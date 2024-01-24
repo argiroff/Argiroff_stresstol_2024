@@ -1,0 +1,52 @@
+##########################
+## BC ITS SUMMARY DADA2 ##
+##########################
+#
+## 1. QIIME2 environment
+source activate qiime2-2022.8
+#
+# 2. Metadata
+#
+qiime metadata tabulate \
+    --m-input-file ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_LE1_DADA_out/denoising_stats.qza \
+    --o-visualization ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_LE1_DADA_out/BC_ITS_LE1_denoising_stats.qzv
+#
+qiime metadata tabulate \
+    --m-input-file ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RE1_DADA_out/denoising_stats.qza \
+    --o-visualization ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RE1_DADA_out/BC_ITS_RE1_denoising_stats.qzv
+#
+qiime metadata tabulate \
+    --m-input-file ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RE2_DADA_out/denoising_stats.qza \
+    --o-visualization ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RE2_DADA_out/BC_ITS_RE2_denoising_stats.qzv
+#
+qiime metadata tabulate \
+    --m-input-file ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_Redo1_DADA_out/denoising_stats.qza \
+    --o-visualization ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_Redo1_DADA_out/BC_ITS_Redo1_denoising_stats.qzv
+#
+qiime metadata tabulate \
+    --m-input-file ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_Redo2_DADA_out/denoising_stats.qza \
+    --o-visualization ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_Redo2_DADA_out/BC_ITS_Redo2_denoising_stats.qzv
+#
+qiime metadata tabulate \
+    --m-input-file ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH1_DADA_out/denoising_stats.qza \
+    --o-visualization ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH1_DADA_out/BC_ITS_RH1_denoising_stats.qzv
+#
+qiime metadata tabulate \
+    --m-input-file ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH2_DADA_out/denoising_stats.qza \
+    --o-visualization ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH2_DADA_out/BC_ITS_RH2_denoising_stats.qzv
+#
+qiime metadata tabulate \
+    --m-input-file ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH3_DADA_out/denoising_stats.qza \
+    --o-visualization ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH3_DADA_out/BC_ITS_RH3_denoising_stats.qzv
+#
+qiime metadata tabulate \
+    --m-input-file ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH4_DADA_out/denoising_stats.qza \
+    --o-visualization ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH4_DADA_out/BC_ITS_RH4_denoising_stats.qzv
+#
+qiime metadata tabulate \
+    --m-input-file ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH5_DADA_out/denoising_stats.qza \
+    --o-visualization ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH5_DADA_out/BC_ITS_RH5_denoising_stats.qzv
+#
+## 3. Deactivate QIIME2 environment
+conda deactivate
+#

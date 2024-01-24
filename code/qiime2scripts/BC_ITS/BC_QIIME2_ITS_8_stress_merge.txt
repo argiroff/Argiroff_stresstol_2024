@@ -1,0 +1,38 @@
+##################
+## BC ITS MERGE ##
+##################
+#
+## 1. QIIME2 environment
+source activate qiime2-2022.8
+#
+# 2. Merge ASV tables
+qiime feature-table merge \
+    --i-tables ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_LE1_DADA_out/table.qza \
+    --i-tables ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RE1_DADA_out/table.qza \
+    --i-tables ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RE2_DADA_out/table.qza \
+    --i-tables ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_Redo1_DADA_out/table.qza \
+    --i-tables ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_Redo2_DADA_out/table.qza \
+    --i-tables ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH1_DADA_out/table.qza \
+    --i-tables ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH2_DADA_out/table.qza \
+    --i-tables ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH3_DADA_out/table.qza \
+    --i-tables ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH4_DADA_out/table.qza \
+    --i-tables ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH5_DADA_out/table.qza \
+    --o-merged-table ~/Documents/Stress_tolerance/amplicon_data/final_qzas/BC/ITS/BC_ITS_merged_table.qza
+#
+# 3. Merge representative sequences
+qiime feature-table merge-seqs \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_LE1_DADA_out/representative_sequences.qza \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RE1_DADA_out/representative_sequences.qza \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RE2_DADA_out/representative_sequences.qza \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_Redo1_DADA_out/representative_sequences.qza \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_Redo2_DADA_out/representative_sequences.qza \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH1_DADA_out/representative_sequences.qza \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH2_DADA_out/representative_sequences.qza \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH3_DADA_out/representative_sequences.qza \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH4_DADA_out/representative_sequences.qza \
+    --i-data ~/Documents/Stress_tolerance/amplicon_data/working_qzas/BC/ITS/demux_BC_ITS_RH5_DADA_out/representative_sequences.qza \
+    --o-merged-data ~/Documents/Stress_tolerance/amplicon_data/final_qzas/BC/ITS/BC_ITS_merged_repseqs.qza
+#
+## 4. Deactivate QIIME2 environment
+conda deactivate
+#
