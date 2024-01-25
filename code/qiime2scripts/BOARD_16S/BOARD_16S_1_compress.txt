@@ -1,8 +1,0 @@
-########################
-## BOARD 16S COMPRESS ##
-########################
-#
-gzip ~/Documents/Stress_tolerance/amplicon_data/raw_fastq/BOARD/16S/16S_BS_SRA/*.fastq
-gzip ~/Documents/Stress_tolerance/amplicon_data/raw_fastq/BOARD/16S/16S_RE_SRA/*.fastq
-gzip ~/Documents/Stress_tolerance/amplicon_data/raw_fastq/BOARD/16S/16S_RH_SRA/*.fastq
-#
