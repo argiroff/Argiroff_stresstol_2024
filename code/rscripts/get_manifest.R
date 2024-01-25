@@ -99,7 +99,7 @@ BC_16S_manifest_name <- list.files(
 # Output directory
 BC_16S_manifest_output <- rep(
   
-  "data/qiime2/manifest_files/BC/16S",
+  "data/qiime2/manifest_files/16S",
   
   length(BC_16S_manifest_name)
   
@@ -155,7 +155,7 @@ BC_ITS_manifest_name <- list.files(
 # Output directory
 BC_ITS_manifest_output <- rep(
   
-  "data/qiime2/manifest_files/BC/ITS",
+  "data/qiime2/manifest_files/ITS",
   
   length(BC_ITS_manifest_name)
   
@@ -222,7 +222,7 @@ DAVIS_16S_manifest_name <- list.files(
 # Output directory
 DAVIS_16S_manifest_output <- rep(
   
-  "data/qiime2/manifest_files/DAVIS/16S",
+  "data/qiime2/manifest_files/16S",
   
   length(DAVIS_16S_manifest_name)
   
@@ -278,7 +278,7 @@ DAVIS_ITS_manifest_name <- list.files(
 # Output directory
 DAVIS_ITS_manifest_output <- rep(
   
-  "data/qiime2/manifest_files/DAVIS/ITS",
+  "data/qiime2/manifest_files/ITS",
   
   length(DAVIS_ITS_manifest_name)
   
@@ -334,7 +334,7 @@ BOARD_16S_manifest_name <- list.files(
 # Output directory
 BOARD_16S_manifest_output <- rep(
   
-  "data/qiime2/manifest_files/BOARD/16S",
+  "data/qiime2/manifest_files/16S",
   
   length(BOARD_16S_manifest_name)
   
@@ -390,7 +390,7 @@ BOARD_ITS_manifest_name <- list.files(
 # Output directory
 BOARD_ITS_manifest_output <- rep(
   
-  "data/qiime2/manifest_files/BOARD/ITS",
+  "data/qiime2/manifest_files/ITS",
   
   length(BOARD_ITS_manifest_name)
   
