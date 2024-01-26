@@ -301,6 +301,30 @@ pmap(
   
 )
 
+#### Fix BOARD names ####
+
+fix_board_names <- function(x, amplicon) {
+  
+  if(amplicon == "16S") {
+    
+    tmp1 <- str_replace(x, "_16S_", "_BOARD_16S_")
+    
+  } else if(amplicon == "ITS") {
+    
+    tmp1 <- str_replace(x, "_ITS_", "_BOARD_ITS_")
+    
+  } else {
+    
+    tmp1 <- x
+    
+  }
+  
+  tmp2 <- str_remove(tmp1, "_SRA")
+  
+  return(tmp2)
+  
+}
+
 #### 8. BOARD 16S ####
 
 # BOARD 16S input
@@ -329,7 +353,9 @@ BOARD_16S_manifest_name <- list.files(
   
 ) %>%
   
-  map_chr(., .f = format_output)
+  map_chr(., .f = format_output) %>%
+  
+  map2_chr(., "16S", .f = fix_board_names)
 
 # Output directory
 BOARD_16S_manifest_output <- rep(
@@ -385,7 +411,9 @@ BOARD_ITS_manifest_name <- list.files(
   
 ) %>%
   
-  map_chr(., .f = format_output)
+  map_chr(., .f = format_output) %>%
+  
+  map2_chr(., "ITS", .f = fix_board_names)
 
 # Output directory
 BOARD_ITS_manifest_output <- rep(
