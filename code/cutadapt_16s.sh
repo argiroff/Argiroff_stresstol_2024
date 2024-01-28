@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# name: summarize_seqs.sh
+# name: cutadapt_16s.sh
 # author: William Argiroff
 # inputs: QIIME2 demux.qza files
 # outputs: QIIME2 qzv (visual summary) artifact into proper subdirectories in data
@@ -14,17 +14,24 @@ source activate /opt/miniconda3/envs/qiime2-2022.8
 echo "Obtaining filepaths."
 
 infile=`echo "$PWD"/"$1"`
-outfile=`echo "$infile" | sed -E "s/\.qza/\_summary.qzv/"`
+outfile=`echo "$infile" | sed -E "s/demux.qza/trimmed.qza/"`
 
-# Summarize
+# Trim with cudadapt
 progress=`echo "$infile" | sed -E "s/\/demux.qza//" | sed -E "s/(.*\/)//"`
-echo "Summarizing raw sequences in ""$progress"" as ""$outfile"
+echo "Trimming raw sequences in ""$progress"" as ""$outfile"
 
-qiime demux summarize \
-    --i-data "$infile" \
-    --o-visualization "$outfile"
+qiime cutadapt trim-paired \
+    --i-demultiplexed-sequences "$infile" \
+    --p-front-f GTGCCAGCMGCCGCGGTAA \
+    --p-front-f GTGCCAGCMGCWGCGGTAA \
+    --p-front-f GTGCCAGCMGCCGCGGTCA \
+    --p-front-f GTGKCAGCMGCCGCGGTAA \
+    --p-front-r GGACTACHVGGGTWTCTAAT \
+    --p-error-rate 0.1 \
+    --o-trimmed-sequences "$outfile" \
+    --verbose
 
-echo "Finished summarizing ""$infile"
+echo "Finished trimming ""$infile"
 
 # Deactivate QIIME2 environment
 echo "Deactivating QIIME2 environment."

@@ -52,8 +52,6 @@ $(SUM_16S_OUT) : code/summarize_seqs.sh\
 		$$(dir $$@)demux.qza
 	code/summarize_seqs.sh $(dir $@)demux.qza
 
-summary_16s : $(MANIFEST_16S_OUT) $(IMPORT_16S_OUT) $(SUM_16S_OUT)
-
 # ITS
 SUM_ITS_OUT=$(foreach path,$(PATH_ITS),$(path)/demux_summary.qzv)
 
@@ -63,3 +61,15 @@ $(SUM_ITS_OUT) : code/summarize_seqs.sh\
 
 summary_its : $(MANIFEST_ITS_OUT) $(IMPORT_ITS_OUT) $(SUM_ITS_OUT)
 
+#### Trim sequences ####
+
+# 16S, cutadapt
+TRIM_16S_OUT=$(foreach path,$(PATH_16S),$(path)/trimmed.qza)
+
+$(TRIM_16S_OUT) : code/cutadapt_16s.sh\
+		$$(dir $$@)demux.qza
+	code/cutadapt_16s.sh $(dir $@)demux.qza
+
+trim_16s : $(MANIFEST_16S_OUT) $(IMPORT_16S_OUT) $(SUM_16S_OUT) $(TRIM_16S_OUT)
+
+# ITS, ITSxpress
