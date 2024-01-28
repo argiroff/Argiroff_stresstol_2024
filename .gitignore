@@ -2,6 +2,6 @@ data/
 code/mothur/
 .DS_Store
 code/.DS_Store
-code/qiime2scripts/.DS_Store
 .Rproj.user
 .Rhistory
+code/qiime2scripts/.DS_Store
