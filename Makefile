@@ -88,8 +88,8 @@ $(SUM_16S_TRIM) : code/summarize_trimmed_seqs.sh\
 DADA2_16S=$(foreach path,$(PATH_16S),$(path)/dada2/)
 
 $(DADA2_16S) : code/dada2.sh\
-		$$@
-	code/dada2.sh $@
+		$$(subst dada2/,trimmed.qza,$$@)
+	code/dada2.sh $(subst dada2/,trimmed.qza,$@)
 
 dada2_16s : $(MANIFEST_16S_OUT) $(IMPORT_16S_OUT) $(SUM_16S_OUT) $(TRIM_16S_OUT) $(SUM_16S_TRIM) $(DADA2_16S)
 
