@@ -2,7 +2,7 @@
 
 # name: summarize_seqs.sh
 # author: William Argiroff
-# inputs: QIIME2 demux.qza files
+# inputs: QIIME2 demuz.qza files
 # outputs: QIIME2 qzv (visual summary) artifact into proper subdirectories in data
 # notes: expects path(relative to project root)/demux.qza as input
 
