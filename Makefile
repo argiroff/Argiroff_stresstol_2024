@@ -70,8 +70,12 @@ $(TRIM_16S_OUT) : code/cutadapt_16s.sh\
 		$$(dir $$@)demux.qza
 	code/cutadapt_16s.sh $(dir $@)demux.qza
 
-
 # ITS, ITSxpress
+TRIM_ITS_OUT=$(foreach path,$(PATH_ITS),$(path)/trimmed.qza)
+
+$(TRIM_ITS_OUT) : code/itsxpress_its.sh\
+		$$(dir $$@)demux.qza
+	code/itsxpress_its.sh $(dir $@)demux.qza
 
 #### Summarize trimmed seqs as qzv ####
 
@@ -82,15 +86,29 @@ $(SUM_16S_TRIM) : code/summarize_trimmed_seqs.sh\
 		$$(dir $$@)trimmed.qza
 	code/summarize_trimmed_seqs.sh $(dir $@)trimmed.qza
 
+# ITS
+SUM_ITS_TRIM=$(foreach path,$(PATH_ITS),$(path)/trimmed_summary.qzv)
+
+$(SUM_ITS_TRIM) : code/summarize_trimmed_seqs.sh\
+		$$(dir $$@)trimmed.qza
+	code/summarize_trimmed_seqs.sh $(dir $@)trimmed.qza
+
 #### DADA2
 
 # 16S
 DADA2_16S=$(foreach path,$(PATH_16S),$(path)/dada2/)
 
 $(DADA2_16S) : code/dada2.sh\
-		$$(subst dada2/,trimmed.qza,$$@)
-	code/dada2.sh $(subst dada2/,trimmed.qza,$@)
+		$$(subst dada2,trimmed.qza,$$@)
+	code/dada2.sh $(subst dada2,trimmed.qza,$@)
 
 dada2_16s : $(MANIFEST_16S_OUT) $(IMPORT_16S_OUT) $(SUM_16S_OUT) $(TRIM_16S_OUT) $(SUM_16S_TRIM) $(DADA2_16S)
 
 # ITS
+DADA2_ITS=$(foreach path,$(PATH_ITS),$(path)/dada2/)
+
+$(DADA2_ITS) : code/dada2.sh\
+		$$(subst dada2,trimmed.qza,$$@)
+	code/dada2.sh $(subst dada2,trimmed.qza,$@)
+
+dada2_its : $(MANIFEST_ITS_OUT) $(IMPORT_ITS_OUT) $(SUM_ITS_OUT) $(TRIM_ITS_OUT) $(SUM_ITS_TRIM) $(DADA2_ITS)

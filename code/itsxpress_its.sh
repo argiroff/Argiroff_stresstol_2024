@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# name: cutadapt_16s.sh
+# name: itsxpress_its.sh
 # author: William Argiroff
 # inputs: QIIME2 demux.qza files
 # outputs: QIIME2 qzv (visual summary) artifact into proper subdirectories in data
@@ -16,21 +16,16 @@ echo "Obtaining filepaths."
 infile=`echo "$PWD"/"$1"`
 outfile=`echo "$infile" | sed -E "s/demux.qza/trimmed.qza/"`
 
-# Trim with cudadapt
+# Trim with ITSxpress
 progress=`echo "$infile" | sed -E "s/\/demux.qza//" | sed -E "s/(.*\/)//"`
 echo "Trimming raw sequences in ""$progress"" as ""$outfile"
 
-qiime cutadapt trim-paired \
-    --i-demultiplexed-sequences "$infile" \
-    --p-front-f GTGCCAGCMGCCGCGGTAA \
-    --p-front-f GTGCCAGCMGCWGCGGTAA \
-    --p-front-f GTGCCAGCMGCCGCGGTCA \
-    --p-front-f GTGKCAGCMGCCGCGGTAA \
-    --p-front-r GGACTACHVGGGTWTCTAAT \
-    --p-error-rate 0.1 \
-    --o-trimmed-sequences "$outfile" \
-    --p-cores 10 \
-    --verbose
+qiime itsxpress trim-pair-output-unmerged \
+    --i-per-sample-sequences "$infile" \
+    --p-region ITS2 \
+    --p-taxa F \
+    --o-trimmed "$outfile" \
+    --p-threads 10
 
 echo "Finished trimming ""$infile"
 
