@@ -70,6 +70,25 @@ $(TRIM_16S_OUT) : code/cutadapt_16s.sh\
 		$$(dir $$@)demux.qza
 	code/cutadapt_16s.sh $(dir $@)demux.qza
 
-trim_16s : $(MANIFEST_16S_OUT) $(IMPORT_16S_OUT) $(SUM_16S_OUT) $(TRIM_16S_OUT)
 
 # ITS, ITSxpress
+
+#### Summarize trimmed seqs as qzv ####
+
+# 16S
+SUM_16S_TRIM=$(foreach path,$(PATH_16S),$(path)/trimmed_summary.qzv)
+
+$(SUM_16S_TRIM) : code/summarize_trimmed_seqs.sh\
+		$$(dir $$@)trimmed.qza
+	code/summarize_trimmed_seqs.sh $(dir $@)trimmed.qza
+
+#### DADA2
+
+# 16S
+DADA2_16S=$(foreach path,$(PATH_16S),$(path)/dada2/)
+
+$(DADA2_16S) : code/dada2.sh\
+		$$@
+	code/dada2.sh $@
+
+dada2_16s : $(MANIFEST_16S_OUT) $(IMPORT_16S_OUT) $(SUM_16S_OUT) $(TRIM_16S_OUT) $(SUM_16S_TRIM) $(DADA2_16S)

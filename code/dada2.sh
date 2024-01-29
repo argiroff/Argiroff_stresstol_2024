@@ -14,21 +14,17 @@ source activate /opt/miniconda3/envs/qiime2-2022.8
 echo "Obtaining filepaths."
 
 infile=`echo "$PWD"/"$1"`
-outfile1=`echo "$infile" | sed -E "s/trimmed.qza/table.qza/"`
-outfile2=`echo "$infile" | sed -E "s/trimmed.qza/repseqs.qza/"`
-outfile3=`echo "$infile" | sed -E "s/trimmed.qza/stats.qza/"`
+outdir=`echo "$infile" | sed -E "s/trimmed.qza/dada2/"`
 
 # Summarize
 progress=`echo "$infile" | sed -E "s/\/trimmed.qza//" | sed -E "s/(.*\/)//"`
-echo "Running DADA2 for ""$progress"" to produce ""$outfile"
+echo "Running DADA2 for ""$progress"" to produce ""$outdir""/"
 
 qiime dada2 denoise-paired \
     --i-demultiplexed-seqs "$infile" \
     --p-trunc-len-f 0 \
     --p-trunc-len-r 0 \
-    --o-table "$outfile1" \
-    --o-representative-sequences "$outfile2" \
-    --o-denoising-stats "$outfile3"
+    --output-dir "$outdir" \
     --p-n-threads 10
 
 echo "Finished processing ""$infile"
