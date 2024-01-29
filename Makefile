@@ -92,3 +92,5 @@ $(DADA2_16S) : code/dada2.sh\
 	code/dada2.sh $@
 
 dada2_16s : $(MANIFEST_16S_OUT) $(IMPORT_16S_OUT) $(SUM_16S_OUT) $(TRIM_16S_OUT) $(SUM_16S_TRIM) $(DADA2_16S)
+
+# ITS
