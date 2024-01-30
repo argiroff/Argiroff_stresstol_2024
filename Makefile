@@ -102,7 +102,9 @@ $(DADA2_16S) : code/dada2.sh\
 		$$(subst dada2,trimmed.qza,$$@)
 	code/dada2.sh $(subst dada2,trimmed.qza,$@)
 
-dada2_16s : $(MANIFEST_16S_OUT) $(IMPORT_16S_OUT) $(SUM_16S_OUT) $(TRIM_16S_OUT) $(SUM_16S_TRIM) $(DADA2_16S)
+#dada2_16s : $(MANIFEST_16S_OUT) $(IMPORT_16S_OUT) $(SUM_16S_OUT)\
+#	$(TRIM_16S_OUT) $(SUM_16S_TRIM) $(DADA2_16S)
+dada2_16s : $(SUM_16S_TRIM) $(DADA2_16S)
 
 # ITS
 DADA2_ITS=$(foreach path,$(PATH_ITS),$(path)/dada2/)
@@ -111,4 +113,12 @@ $(DADA2_ITS) : code/dada2.sh\
 		$$(subst dada2,trimmed.qza,$$@)
 	code/dada2.sh $(subst dada2,trimmed.qza,$@)
 
-dada2_its : $(MANIFEST_ITS_OUT) $(IMPORT_ITS_OUT) $(SUM_ITS_OUT) $(TRIM_ITS_OUT) $(SUM_ITS_TRIM) $(DADA2_ITS)
+dada2_its : $(MANIFEST_ITS_OUT) $(IMPORT_ITS_OUT) $(SUM_ITS_OUT)\
+	$(TRIM_ITS_OUT) $(SUM_ITS_TRIM) $(DADA2_ITS)
+
+#### Summarize DADA2 output as qzv ####
+
+# 16S
+
+# ITS
+
