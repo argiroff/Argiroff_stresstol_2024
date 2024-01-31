@@ -102,10 +102,6 @@ $(DADA2_16S) : code/dada2.sh\
 		$$(subst dada2,trimmed.qza,$$@)
 	code/dada2.sh $(subst dada2,trimmed.qza,$@)
 
-#dada2_16s : $(MANIFEST_16S_OUT) $(IMPORT_16S_OUT) $(SUM_16S_OUT)\
-#	$(TRIM_16S_OUT) $(SUM_16S_TRIM) $(DADA2_16S)
-dada2_16s : $(SUM_16S_TRIM) $(DADA2_16S)
-
 # ITS
 DADA2_ITS=$(foreach path,$(PATH_ITS),$(path)/dada2/)
 
@@ -119,6 +115,81 @@ dada2_its : $(MANIFEST_ITS_OUT) $(IMPORT_ITS_OUT) $(SUM_ITS_OUT)\
 #### Summarize DADA2 output as qzv ####
 
 # 16S
+SUM_16S_DADA2=$(foreach path,$(PATH_16S),$(path)/denoising_stats_summary.qzv)
+
+$(SUM_16S_DADA2) : code/summarize_dada2.sh\
+		$$(dir $$@)dada2/denoising_stats.qza
+	code/summarize_dada2.sh $(dir $@)dada2/denoising_stats.qza
+
+sum_16s_dada2 : $(SUM_16S_DADA2)
 
 # ITS
+SUM_DADA2_ITS=$(foreach path,$(PATH_ITS),$(path)/denoising_stats_summary.qzv)
 
+#### Merge ASV tables ####
+
+# 16S
+TAB_16S=$(wildcard data/qiime2/16S/*/dada2/table.qza)
+MERGE_TAB_16S=data/qiime2/final_qzas/16S/merged_table.qza
+
+$(MERGE_TAB_16S) : code/merge_tables.sh\
+		$$(TAB_16S)
+	code/merge_tables.sh $(TAB_16S)
+
+#ITS
+TAB_ITS=$(wildcard data/qiime2/ITS/*/dada2/table.qza)
+MERGE_TAB_ITS=data/qiime2/final_qzas/ITS/merged_table.qza
+
+$(MERGE_TAB_ITS) : code/merge_tables.sh\
+		$$(TAB_ITS)
+	code/merge_tables.sh $(TAB_ITS)
+
+#merge_tab_its : $(DADA2_ITS) $(SUM_ITS_DADA2) $(MERGE_TAB_ITS)
+merge_tab_its : $(MERGE_TAB_ITS)
+
+#### Merge ASV representative sequences ####
+
+# 16S
+SEQS_16S=$(wildcard data/qiime2/16S/*/dada2/representative_sequences.qza)
+MERGE_SEQS_16S=data/qiime2/final_qzas/16S/merged_representative_sequences.qza
+
+$(MERGE_SEQS_16S) : code/merge_repseqs.sh\
+		$$(SEQS_16S)
+	code/merge_repseqs.sh $(SEQS_16S)
+
+#ITS
+SEQS_ITS=$(wildcard data/qiime2/ITS/*/dada2/representative_sequences.qza)
+MERGE_SEQS_ITS=data/qiime2/final_qzas/ITS/merged_representative_sequences.qza
+
+$(MERGE_SEQS_ITS) : code/merge_repseqs.sh\
+		$$(MERGE_SEQS_ITS)
+	code/merge_repseqs.sh $(MERGE_SEQS_ITS)
+
+#merge_seqs_its : $(DADA2_ITS) $(SUM_ITS_DADA2) $(MERGE_SEQS_ITS)
+merge_seqs_its : $(MERGE_SEQS_ITS)
+
+#### Cluster 97% OTUs, table ####
+
+# 16S
+OTU_97_16S=data/qiime2/final_qzas/16S/otu_97/
+
+$(OTU_97_16S) : code/cluster_otu_97.sh\
+		$$(subst otu_97,merged_table.qza,$$@)\
+		$$(subst otu_97,merged_representative_sequences.qza,$$@)
+	code/cluster_otu_97.sh $(subst otu_97,merged_table.qza,$@) $(subst otu_97,merged_representative_sequences.qza,$@)
+
+otu_97_16s : $(OTU_97_16S)
+
+#ITS
+OTU_97_ITS=data/qiime2/final_qzas/ITS/otu_97/
+
+$(OTU_97_ITS) : code/cluster_otu_97.sh\
+		$$(subst otu_97,merged_table.qza,$$@)\
+		$$(subst otu_97,merged_representative_sequences.qza,$$@)
+	code/cluster_otu_97.sh $(subst otu_97,merged_table.qza,$@) $(subst otu_97,merged_representative_sequences.qza,$@)
+
+otu_97_its : $(OTU_97_ITS)
+
+
+#dada2_16s : $(MANIFEST_16S_OUT) $(IMPORT_16S_OUT) $(SUM_16S_OUT)\
+#	$(TRIM_16S_OUT) $(SUM_16S_TRIM) $(DADA2_16S)
