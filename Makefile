@@ -190,6 +190,18 @@ $(OTU_97_ITS) : code/cluster_otu_97.sh\
 
 otu_97_its : $(OTU_97_ITS)
 
+#### Assign taxonomy ####
+
+# 16S
+TAX_16S=data/qiime2/final_qzas/16S/otu_97_taxonomy/
+
+$(TAX_16S) : code/assign_tax_16s.sh\
+		data/qiime2/final_qzas/16S/otu_97/clustered_sequences.qza\
+		data/qiime2/final_qzas/taxonomy/16S/silva-138-99-515-806-nb-classifier.qza
+	code/assign_tax_16s.sh data/qiime2/final_qzas/16S/otu_97/clustered_sequences.qza\
+		data/qiime2/final_qzas/taxonomy/16S/silva-138-99-515-806-nb-classifier.qza
+
+tax_16s : $(TAX_16S)
 
 #dada2_16s : $(MANIFEST_16S_OUT) $(IMPORT_16S_OUT) $(SUM_16S_OUT)\
 #	$(TRIM_16S_OUT) $(SUM_16S_TRIM) $(DADA2_16S)
