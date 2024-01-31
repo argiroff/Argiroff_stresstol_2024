@@ -121,8 +121,6 @@ $(SUM_16S_DADA2) : code/summarize_dada2.sh\
 		$$(dir $$@)dada2/denoising_stats.qza
 	code/summarize_dada2.sh $(dir $@)dada2/denoising_stats.qza
 
-sum_16s_dada2 : $(SUM_16S_DADA2)
-
 # ITS
 SUM_DADA2_ITS=$(foreach path,$(PATH_ITS),$(path)/denoising_stats_summary.qzv)
 
@@ -178,8 +176,6 @@ $(OTU_97_16S) : code/cluster_otu_97.sh\
 		$$(subst otu_97,merged_representative_sequences.qza,$$@)
 	code/cluster_otu_97.sh $(subst otu_97,merged_table.qza,$@) $(subst otu_97,merged_representative_sequences.qza,$@)
 
-otu_97_16s : $(OTU_97_16S)
-
 #ITS
 OTU_97_ITS=data/qiime2/final_qzas/ITS/otu_97/
 
@@ -198,10 +194,16 @@ TAX_16S=data/qiime2/final_qzas/16S/otu_97_taxonomy/
 $(TAX_16S) : code/assign_tax_16s.sh\
 		data/qiime2/final_qzas/16S/otu_97/clustered_sequences.qza\
 		data/qiime2/final_qzas/taxonomy/16S/silva-138-99-515-806-nb-classifier.qza
-	code/assign_tax_16s.sh data/qiime2/final_qzas/16S/otu_97/clustered_sequences.qza\
-		data/qiime2/final_qzas/taxonomy/16S/silva-138-99-515-806-nb-classifier.qza
+	code/assign_tax_16s.sh data/qiime2/final_qzas/16S/otu_97/clustered_sequences.qza data/qiime2/final_qzas/taxonomy/16S/silva-138-99-515-806-nb-classifier.qza
 
-tax_16s : $(TAX_16S)
+# ITS
 
-#dada2_16s : $(MANIFEST_16S_OUT) $(IMPORT_16S_OUT) $(SUM_16S_OUT)\
-#	$(TRIM_16S_OUT) $(SUM_16S_TRIM) $(DADA2_16S)
+#### Full QIIME2 rules ####
+
+# 16S
+
+qiime2_16s : $(MANIFEST_16S_OUT) $(IMPORT_16S_OUT) $(SUM_16S_OUT)\
+	$(TRIM_16S_OUT) $(SUM_16S_TRIM) $(DADA2_16S) $(SUM_16S_DADA2)\
+	$(MERGE_TAB_16S) $(MERGE_SEQS_16S) $(OTU_97_16S) $(TAX_16S)
+
+# ITS
