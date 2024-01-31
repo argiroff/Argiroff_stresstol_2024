@@ -11,5 +11,9 @@ Associated an R project with root project directory (`Argiroff_stresstol_2024.Rp
 * `wget`  
 * `R`  
 * `RStudio`  
+* `QIIME2` v2022.8  
 
+### Makefile  
+
+Makefile contains rules to reproduce data analysis pipeline. The rules `qiime2_16s` and `qiime2_its` reproduce the processing of 16S and ITS2 sequences, respectively, up through OTU clustering and taxonomic assignments.  
 
