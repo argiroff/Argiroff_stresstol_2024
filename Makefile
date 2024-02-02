@@ -173,7 +173,7 @@ OTU_97_16S=data/qiime2/final_qzas/16S/otu_97/
 $(OTU_97_16S) : code/cluster_otu_97.sh\
 		$$(subst otu_97,merged_table.qza,$$@)\
 		$$(subst otu_97,merged_representative_sequences.qza,$$@)
-	code/cluster_otu_97.sh $^
+	code/cluster_otu_97.sh $(subst otu_97,merged_table.qza,$@) $(subst otu_97,merged_representative_sequences.qza,$@)
 
 #ITS
 OTU_97_ITS=data/qiime2/final_qzas/ITS/otu_97/
@@ -181,7 +181,7 @@ OTU_97_ITS=data/qiime2/final_qzas/ITS/otu_97/
 $(OTU_97_ITS) : code/cluster_otu_97.sh\
 		$$(subst otu_97,merged_table.qza,$$@)\
 		$$(subst otu_97,merged_representative_sequences.qza,$$@)
-	code/cluster_otu_97.sh $^
+	code/cluster_otu_97.sh $(subst otu_97,merged_table.qza,$@) $(subst otu_97,merged_representative_sequences.qza,$@)
 
 #### Assign taxonomy ####
 
@@ -191,7 +191,7 @@ TAX_16S=data/qiime2/final_qzas/16S/otu_97_taxonomy/
 $(TAX_16S) : code/assign_tax_16s.sh\
 		data/qiime2/final_qzas/16S/otu_97/clustered_sequences.qza\
 		data/qiime2/final_qzas/taxonomy/16S/silva-138-99-515-806-nb-classifier.qza
-	code/assign_tax_16s.sh $^
+	code/assign_tax_16s.sh data/qiime2/final_qzas/16S/otu_97/clustered_sequences.qza data/qiime2/final_qzas/taxonomy/16S/silva-138-99-515-806-nb-classifier.qza
 
 # ITS
 TAX_ITS=data/qiime2/final_qzas/ITS/otu_97_taxonomy/
@@ -199,7 +199,7 @@ TAX_ITS=data/qiime2/final_qzas/ITS/otu_97_taxonomy/
 $(TAX_ITS) : code/assign_tax_its.sh\
 		data/qiime2/final_qzas/16S/otu_97/clustered_sequences.qza\
 		data/qiime2/final_qzas/taxonomy/16S/silva-138-99-515-806-nb-classifier.qza
-	code/assign_tax_its.sh $^ 
+	code/assign_tax_its.sh data/qiime2/final_qzas/16S/otu_97/clustered_sequences.qza data/qiime2/final_qzas/taxonomy/16S/silva-138-99-515-806-nb-classifier.qza
 
 #### Full QIIME2 rules ####
 
@@ -213,3 +213,30 @@ qiime2_16s : $(MANIFEST_16S_OUT) $(IMPORT_16S_OUT) $(SUM_16S_OUT)\
 qiime2_its : $(MANIFEST_ITS_OUT) $(IMPORT_ITS_OUT) $(SUM_ITS_OUT)\
 	$(TRIM_ITS_OUT) $(SUM_ITS_TRIM) $(DADA2_ITS) $(SUM_ITS_DADA2)\
 	$(MERGE_TAB_ITS) $(MERGE_SEQS_ITS) $(OTU_97_ITS) $(TAX_ITS)
+
+#### Format sequence metadata ####
+
+# 16S, BC
+METADATA_16S_BC=data/processed/metadata/16S/metadata_16s_bc.txt
+METADATA_16S_BC_PRE1=$(wildcard data/metadata/BC/16S/*.csv)
+METADATA_16S_BC_PRE2=$(wildcard data/metadata/BC/16S/*.tsv)
+
+$(METADATA_16S_BC) : code/format_16s_bc_metadata.R\
+		$$(METADATA_16S_BC_PRE1)\
+		$$(METADATA_16S_BC_PRE2)
+	code/format_16s_bc_metadata.R $(METADATA_16S_BC_PRE1) $(METADATA_16S_BC_PRE2) $@
+
+metadata_16s_bc : $(METADATA_16S_BC)
+# 16S, BOARD
+METADATA_16S_BOARD=data/processed/metadata/16S/metadata_16s_board.txt
+
+
+# 16S, DAVIS
+METADATA_16S_DAVIS=data/processed/metadata/16S/metadata_16s_davis.txt
+
+
+METADATA_16S_BOARD=$(wildcard data/metadata/BOARD/)
+
+$(METADATA_16S_OUT) : code/format_16s_metadata.R\
+		$$(METADATA_16S_BC1)\
+		$$(METADATA_16S_BC2)
