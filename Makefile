@@ -214,10 +214,10 @@ qiime2_its : $(MANIFEST_ITS_OUT) $(IMPORT_ITS_OUT) $(SUM_ITS_OUT)\
 	$(TRIM_ITS_OUT) $(SUM_ITS_TRIM) $(DADA2_ITS) $(SUM_ITS_DADA2)\
 	$(MERGE_TAB_ITS) $(MERGE_SEQS_ITS) $(OTU_97_ITS) $(TAX_ITS)
 
-#### Format sequence metadata ####
+#### Format sequence metadata, 16S ####
 
 # 16S, BC
-METADATA_16S_BC=data/processed/metadata/16S/metadata_16s_bc.txt
+METADATA_16S_BC=data/processed/seq_data/16S/metadata_16s_bc.txt
 METADATA_16S_BC_PRE1=$(wildcard data/metadata/BC/16S/*.csv)
 METADATA_16S_BC_PRE2=$(wildcard data/metadata/BC/16S/*.tsv)
 
@@ -226,17 +226,34 @@ $(METADATA_16S_BC) : code/format_16s_bc_metadata.R\
 		$$(METADATA_16S_BC_PRE2)
 	code/format_16s_bc_metadata.R $(METADATA_16S_BC_PRE1) $(METADATA_16S_BC_PRE2) $@
 
-metadata_16s_bc : $(METADATA_16S_BC)
-# 16S, BOARD
-METADATA_16S_BOARD=data/processed/metadata/16S/metadata_16s_board.txt
 
+# 16S, BOARD
+METADATA_16S_BOARD=data/processed/seq_data/16S/metadata_16s_board.txt
+METADATA_16S_BOARD_PRE=data/metadata/BOARD/BOARD_metadata_SraRunTable.txt
+
+$(METADATA_16S_BOARD) : code/format_16s_board_metadata.R\
+		$$(METADATA_16S_BOARD_PRE)
+	code/format_16s_board_metadata.R $(METADATA_16S_BOARD_PRE) $@
 
 # 16S, DAVIS
-METADATA_16S_DAVIS=data/processed/metadata/16S/metadata_16s_davis.txt
+METADATA_16S_DAVIS=data/processed/seq_data/16S/metadata_16s_davis.txt
 
+METADATA_16S_DAVIS_PRE1=$(wildcard data/qiime2/16S/DAVIS_*/manifest.txt)
+METADATA_16S_DAVIS_PRE2=$(wildcard data/metadata/DAVIS/*.txt)
 
-METADATA_16S_BOARD=$(wildcard data/metadata/BOARD/)
+$(METADATA_16S_DAVIS) : code/format_16s_davis_metadata.R\
+		$$(METADATA_16S_DAVIS_PRE1)\
+		$$(METADATA_16S_DAVIS_PRE2)
+	code/format_16s_davis_metadata.R $(METADATA_16S_DAVIS_PRE1) $(METADATA_16S_DAVIS_PRE2) $@
 
-$(METADATA_16S_OUT) : code/format_16s_metadata.R\
-		$$(METADATA_16S_BC1)\
-		$$(METADATA_16S_BC2)
+# 16S full
+
+METADATA_16S=data/processed/seq_data/16S/metadata_16s.txt
+
+$(METADATA_16S) : code/format_metadata_16s.R\
+		$$(METADATA_16S_BC)\
+		$$(METADATA_16S_BOARD)\
+		$$(METADATA_16S_DAVIS)
+	code/format_metadata_16s.R $(METADATA_16S_BC) $(METADATA_16S_BOARD) $(METADATA_16S_DAVIS) $@
+
+metadata_16s : $(METADATA_16S_BC) $(METADATA_16S_BOARD) $(METADATA_16S_DAVIS) $(METADATA_16S)

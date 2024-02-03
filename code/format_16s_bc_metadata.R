@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript --vanilla
 
-# name : format_16s_metadata.R
+# name : format_16s_bc_metadata.R
 # author: William Argiroff
 # inputs : Sequence sample metadata files
 #   data/metadata/BC/16S/*.csv data/metadata/BC/16S/*.tsv

@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript --vanilla
 
-# name : format_16s_metadata.R
+# name : format_16s_board_metadata.R
 # author: William Argiroff
 # inputs : Sequence sample metadata files
 #   data/metadata/BOARD/BOARD_metadata_SraRunTable.txt
