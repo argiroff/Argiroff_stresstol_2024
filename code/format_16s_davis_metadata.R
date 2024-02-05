@@ -80,21 +80,21 @@ rename_cols <- function(x) {
 
 add_col <- function(x) {
   tmp1 <- c(
-    sample_code = NA,
-    sample_name = NA,
-    sample_id = NA,
-    community = NA,
-    plant_habitat = NA,
-    host_species = NA,
-    host_genotype = NA,
-    season = NA,
-    collection_year = NA,
-    replicate = NA,
-    collection_date = NA,
-    cutting_location = NA,
-    treatment = NA,
-    sample_type = NA,
-    location = NA
+    sample_code = NA_character_,
+    sample_name = NA_character_,
+    sample_id = NA_character_,
+    community = NA_character_,
+    plant_habitat = NA_character_,
+    host_species = NA_character_,
+    host_genotype = NA_character_,
+    season = NA_character_,
+    collection_year = NA_character_,
+    replicate = NA_character_,
+    collection_date = NA_character_,
+    cutting_location = NA_character_,
+    treatment = NA_character_,
+    sample_type = NA_character_,
+    location = NA_character_
   )
 
   tmp2 <- c(
@@ -125,7 +125,7 @@ add_col <- function(x) {
 }
 
 davis_16s_metadata <- clargs[8:(length(clargs) - 1)] %>%
-
+  
   map(., .f = read_tsv) %>%
 
   map(., .f = rename_cols) %>%
@@ -133,7 +133,7 @@ davis_16s_metadata <- clargs[8:(length(clargs) - 1)] %>%
   map(., .f = add_col) %>%
 
   set_names(
-    nm = c("Feb_BS", "Feb_BSRH", "Feb_RE", "Feb_RH",
+    nm = c("Feb_BSRH", "Feb_BS", "Feb_RE", "Feb_RH",
            "July_BS", "July_RE1", "July_RE2", "July_RH")
   ) %>%
 
@@ -159,29 +159,41 @@ davis_16s_metadata <- clargs[8:(length(clargs) - 1)] %>%
       "Soil",
       plant_habitat
     ),
-
+    
     plant_habitat = ifelse(
       sample_type == "RH",
       "Rhizosphere",
       plant_habitat
     ),
-
+    
     plant_habitat = ifelse(
       sample_type == "RE",
       "Root endosphere",
       plant_habitat
     ),
-
+    
     season = ifelse(
       month == "Feb",
       "Winter",
       season
     ),
-
+    
     season = ifelse(
       month == "July",
       "Summer",
       season
+    ),
+    
+    treatment = ifelse(
+      is.na(treatment) & str_detect(sample_id, "Control"),
+      "Control",
+      treatment
+    ),
+    
+    treatment = ifelse(
+      is.na(treatment) & str_detect(sample_id, "Drought"),
+      "Drought",
+      treatment
     )
   ) %>%
 
@@ -196,30 +208,6 @@ davis_16s_metadata <- clargs[8:(length(clargs) - 1)] %>%
       is.na(location),
       "Davis, CA",
       location
-    ),
-
-    treatment = ifelse(
-      is.na(treatment) & str_detect(sample_id, "Control"),
-      "Control",
-      treatment
-    ),
-
-    treatment = ifelse(
-      is.na(treatment) & str_detect(sample_id, "Drought"),
-      "Drought",
-      treatment
-    ),
-
-    plant_habitat = ifelse(
-      is.na(plant_habitat) & str_detect(sample_id, "-BS-"),
-      "Soil",
-      plant_habitat
-    ),
-
-    season = ifelse(
-      is.na(season) & str_detect(sample_id, "-Feb"),
-      "Winter",
-      season
     )
   ) %>%
 

@@ -217,18 +217,19 @@ qiime2_its : $(MANIFEST_ITS_OUT) $(IMPORT_ITS_OUT) $(SUM_ITS_OUT)\
 #### Format sequence metadata, 16S ####
 
 # 16S, BC
-METADATA_16S_BC=data/processed/seq_data/16S/metadata_16s_bc.txt
+METADATA_16S_BC=data/processed/seq_data/16S/metadata_working/metadata_16s_bc.txt
 METADATA_16S_BC_PRE1=$(wildcard data/metadata/BC/16S/*.csv)
 METADATA_16S_BC_PRE2=$(wildcard data/metadata/BC/16S/*.tsv)
+METADATA_16S_BC_PRE3=data/metadata/BC/metadata_for_host_spp.txt
 
 $(METADATA_16S_BC) : code/format_16s_bc_metadata.R\
 		$$(METADATA_16S_BC_PRE1)\
-		$$(METADATA_16S_BC_PRE2)
-	code/format_16s_bc_metadata.R $(METADATA_16S_BC_PRE1) $(METADATA_16S_BC_PRE2) $@
-
+		$$(METADATA_16S_BC_PRE2)\
+		$$(METADATA_16S_BC_PRE3)
+	code/format_16s_bc_metadata.R $(METADATA_16S_BC_PRE1) $(METADATA_16S_BC_PRE2) $(METADATA_16S_BC_PRE3) $@
 
 # 16S, BOARD
-METADATA_16S_BOARD=data/processed/seq_data/16S/metadata_16s_board.txt
+METADATA_16S_BOARD=data/processed/seq_data/16S/metadata_working/metadata_16s_board.txt
 METADATA_16S_BOARD_PRE=data/metadata/BOARD/BOARD_metadata_SraRunTable.txt
 
 $(METADATA_16S_BOARD) : code/format_16s_board_metadata.R\
@@ -236,7 +237,7 @@ $(METADATA_16S_BOARD) : code/format_16s_board_metadata.R\
 	code/format_16s_board_metadata.R $(METADATA_16S_BOARD_PRE) $@
 
 # 16S, DAVIS
-METADATA_16S_DAVIS=data/processed/seq_data/16S/metadata_16s_davis.txt
+METADATA_16S_DAVIS=data/processed/seq_data/16S/metadata_working/metadata_16s_davis.txt
 
 METADATA_16S_DAVIS_PRE1=$(wildcard data/qiime2/16S/DAVIS_*/manifest.txt)
 METADATA_16S_DAVIS_PRE2=$(wildcard data/metadata/DAVIS/*.txt)
@@ -247,8 +248,7 @@ $(METADATA_16S_DAVIS) : code/format_16s_davis_metadata.R\
 	code/format_16s_davis_metadata.R $(METADATA_16S_DAVIS_PRE1) $(METADATA_16S_DAVIS_PRE2) $@
 
 # 16S full
-
-METADATA_16S=data/processed/seq_data/16S/metadata_16s.txt
+METADATA_16S=data/processed/seq_data/16S/metadata_working/metadata_16s.txt
 
 $(METADATA_16S) : code/format_metadata_16s.R\
 		$$(METADATA_16S_BC)\
@@ -256,4 +256,18 @@ $(METADATA_16S) : code/format_metadata_16s.R\
 		$$(METADATA_16S_DAVIS)
 	code/format_metadata_16s.R $(METADATA_16S_BC) $(METADATA_16S_BOARD) $(METADATA_16S_DAVIS) $@
 
-metadata_16s : $(METADATA_16S_BC) $(METADATA_16S_BOARD) $(METADATA_16S_DAVIS) $(METADATA_16S)
+# metadata_16s : $(METADATA_16S_BC) $(METADATA_16S_BOARD) $(METADATA_16S_DAVIS) $(METADATA_16S)
+# metadata_16s : $(METADATA_16S_BC)
+
+#### Final OTU processed tibbles ####
+
+# 16S
+FINAL_16S_OTU=data/processed/seq_data/16S/otu_processed/
+
+$(FINAL_16S_OTU) : code/make_otu_tibbles.R\
+		$$(wildcard $$(OTU_97_16S)*.qza)\
+		$$(wildcard $$(TAX_16S)*.qza)\
+		$$(METADATA_16S)
+	code/make_otu_tibbles.R $(wildcard $(OTU_97_16S)*.qza) $(wildcard $(TAX_16S)*.qza) $(METADATA_16S) $@
+
+final_16s_otu : $(FINAL_16S_OTU)

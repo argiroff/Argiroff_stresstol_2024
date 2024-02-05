@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript --vanilla
 
-# name : format_16s_metadata.R
+# name : format_metadata_16s.R
 # author: William Argiroff
 # inputs : Sequence sample metadata files
 #   data/qiime2/16S/*/manifest.txt
@@ -18,7 +18,9 @@ metadata_16s <- clargs[1:3] %>%
   
   map(., .f = read_tsv) %>%
   
-  bind_rows(.)
+  bind_rows(.) %>%
+  
+  mutate(treatment = as.character(treatment))
 
 # Save
 write_tsv(

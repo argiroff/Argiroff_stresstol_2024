@@ -73,15 +73,15 @@ board_16s_metadata <- read_tsv(
       treatment
     ),
 
-    season = NA,
+    season = NA_character_,
 
     location = "Boardman, OR",
 
-    collection_year = NA,
+    collection_year = NA_character_,
 
-    replicate = NA,
+    replicate = NA_character_,
 
-    cutting_location = NA
+    cutting_location = NA_character_
   ) %>%
 
   relocate(
