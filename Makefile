@@ -275,14 +275,15 @@ $(ANCOMBC_IN_16S) : code/split_otu_for_ancombc.R\
 	code/split_otu_for_ancombc.R $(wildcard $(FINAL_16S_OTU)*) $@
 
 # 16S, split phyloseq objects
-ANCOMBC2_PS_16S_1=$(wildcard $(ANCOMBC_IN_16S)/*)
-ANCOMBC2_PS_16S_2=$(foreach path,$(ANCOMBC2_PS_16S_1),$(path)/phyloseq_object.rds)
+ANCOMBC_PS_16S_1=$(wildcard $(ANCOMBC_IN_16S)/*)
+ANCOMBC_PS_16S_2=$(foreach path,$(ANCOMBC_PS_16S_1),$(path)/phyloseq_object.rds)
 
-$(ANCOMBC2_PS_16S_2) : code/ps_for_ancombc.R\
+$(ANCOMBC_PS_16S_2) : code/ps_for_ancombc.R\
 		$$(subst phyloseq_object.rds,metadata_table.txt,$$@)\
 		$$(subst phyloseq_object.rds,otu_table.txt,$$@)\
 		$$(subst phyloseq_object.rds,representative_sequences.fasta,$$@)\
 		$$(subst phyloseq_object.rds,taxonomy_table.txt,$$@)
 	code/ps_for_ancombc.R $(subst phyloseq_object.rds,metadata_table.txt,$@) $(subst phyloseq_object.rds,otu_table.txt,$@) $(subst phyloseq_object.rds,representative_sequences.fasta,$@) $(subst phyloseq_object.rds,taxonomy_table.txt,$@) $@
 
-ps_obj : $(ANCOMBC2_PS_16S_2) $(ANCOMBC_IN_16S)
+# ps_obj : $(ANCOMBC_PS_16S_2) $(ANCOMBC_IN_16S)
+ps_obj : $(ANCOMBC_PS_16S_2)
