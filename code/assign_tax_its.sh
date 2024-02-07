@@ -4,8 +4,8 @@
 # author: William Argiroff
 # inputs: QIIME2 clustered repseq files and UNITE database
 # outputs: QIIME2 taxonomy file in final_qzas/ITS/otu_97_taxonomy/
-# notes: expects path(relative to project root)/repseq as arg1, classifier as arg2,
-#   and classifier seqs as arg3
+# notes: expects path(relative to project root)/repseq as arg1, classifier seqs as arg2,
+#   and taxonomy as arg3
 
 # Activate QIIME2 environment
 echo "Activating QIIME2 environment."
@@ -17,15 +17,15 @@ echo "Obtaining filepaths."
 infile1=`echo "$PWD"/"$1"`
 infile2=`echo "$PWD"/"$2"`
 infile3=`echo "$PWD"/"$3"`
-outdir=`echo "$PWD"/"data/qiime2/ITS/final_qzas/ITS/otu_97_taxonomy"`
+outdir=`echo "$PWD"/"data/qiime2/final_qzas/ITS/otu_97_taxonomy"`
 
 # Trim with ITSxpress
-progress=`echo "$infile" | sed -E "s/\/demux.qza//" | sed -E "s/(.*\/)//"`
+progress=`echo "$infile1" | sed -E "s/\/otu_97\/clustered_sequences.qza//" | sed -E "s/(.*\/)//"`
 echo "Classifying ""$1".
 
 qiime feature-classifier classify-consensus-blast \
-    --i-reference-reads $infile3 \
-    --i-reference-taxonomy $infile2 \
+    --i-reference-reads $infile2 \
+    --i-reference-taxonomy $infile3 \
     --i-query $infile1 \
     --output-dir $outdir
 

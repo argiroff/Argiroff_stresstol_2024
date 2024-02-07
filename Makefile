@@ -91,9 +91,6 @@ $(SUM_ITS_TRIM) : code/summarize_trimmed_seqs.sh\
 		$$(dir $$@)trimmed.qza
 	code/summarize_trimmed_seqs.sh $(dir $@)trimmed.qza
 
-trim_its : $(MANIFEST_ITS_OUT) $(IMPORT_ITS_OUT) $(SUM_ITS_OUT)\
-	$(TRIM_ITS_OUT) $(SUM_ITS_TRIM)
-
 #### DADA2
 
 # 16S
@@ -110,9 +107,6 @@ $(DADA2_ITS) : code/dada2.sh\
 		$$(subst dada2,trimmed.qza,$$@)
 	code/dada2.sh $(subst dada2,trimmed.qza,$@)
 
-dada2_its : $(MANIFEST_ITS_OUT) $(IMPORT_ITS_OUT) $(SUM_ITS_OUT)\
-	$(TRIM_ITS_OUT) $(SUM_ITS_TRIM) $(DADA2_ITS)
-
 #### Summarize DADA2 output as qzv ####
 
 # 16S
@@ -123,7 +117,7 @@ $(SUM_16S_DADA2) : code/summarize_dada2.sh\
 	code/summarize_dada2.sh $(dir $@)dada2/denoising_stats.qza
 
 # ITS
-SUM_DADA2_ITS=$(foreach path,$(PATH_ITS),$(path)/denoising_stats_summary.qzv)
+SUM_ITS_DADA2=$(foreach path,$(PATH_ITS),$(path)/denoising_stats_summary.qzv)
 
 $(SUM_ITS_DADA2) : code/summarize_dada2.sh\
 		$$(dir $$@)dada2/denoising_stats.qza
@@ -197,9 +191,10 @@ $(TAX_16S) : code/assign_tax_16s.sh\
 TAX_ITS=data/qiime2/final_qzas/ITS/otu_97_taxonomy/
 
 $(TAX_ITS) : code/assign_tax_its.sh\
-		data/qiime2/final_qzas/16S/otu_97/clustered_sequences.qza\
-		data/qiime2/final_qzas/taxonomy/16S/silva-138-99-515-806-nb-classifier.qza
-	code/assign_tax_its.sh data/qiime2/final_qzas/16S/otu_97/clustered_sequences.qza data/qiime2/final_qzas/taxonomy/16S/silva-138-99-515-806-nb-classifier.qza
+		data/qiime2/final_qzas/ITS/otu_97/clustered_sequences.qza\
+		data/qiime2/final_qzas/taxonomy/ITS/unite_train/unite_QZAs/unite_ver9_seqs_dynamic_29112022.qza\
+		data/qiime2/final_qzas/taxonomy/ITS/unite_train/unite_QZAs/unite_ver9_taxonomy_dynamic_29112022.qza
+	code/assign_tax_its.sh data/qiime2/final_qzas/ITS/otu_97/clustered_sequences.qza data/qiime2/final_qzas/taxonomy/ITS/unite_train/unite_QZAs/unite_ver9_seqs_dynamic_29112022.qza data/qiime2/final_qzas/taxonomy/ITS/unite_train/unite_QZAs/unite_ver9_taxonomy_dynamic_29112022.qza
 
 #### Full QIIME2 rules ####
 
@@ -270,4 +265,24 @@ $(FINAL_16S_OTU) : code/make_otu_tibbles.R\
 		$$(METADATA_16S)
 	code/make_otu_tibbles.R $(wildcard $(OTU_97_16S)*.qza) $(wildcard $(TAX_16S)*.qza) $(METADATA_16S) $@
 
-final_16s_otu : $(FINAL_16S_OTU)
+#### ANCOMBC2 input ####
+
+# 16S, split OTU tables and corresponding data
+ANCOMBC_IN_16S=data/processed/seq_data/16s/ancombc
+
+$(ANCOMBC_IN_16S) : code/split_otu_for_ancombc.R\
+		$$(wildcard $$(FINAL_16S_OTU)*)
+	code/split_otu_for_ancombc.R $(wildcard $(FINAL_16S_OTU)*) $@
+
+# 16S, split phyloseq objects
+ANCOMBC2_PS_16S_1=$(wildcard $(ANCOMBC_IN_16S)/*)
+ANCOMBC2_PS_16S_2=$(foreach path,$(ANCOMBC2_PS_16S_1),$(path)/phyloseq_object.rds)
+
+$(ANCOMBC2_PS_16S_2) : code/ps_for_ancombc.R\
+		$$(subst phyloseq_object.rds,metadata_table.txt,$$@)\
+		$$(subst phyloseq_object.rds,otu_table.txt,$$@)\
+		$$(subst phyloseq_object.rds,representative_sequences.fasta,$$@)\
+		$$(subst phyloseq_object.rds,taxonomy_table.txt,$$@)
+	code/ps_for_ancombc.R $(subst phyloseq_object.rds,metadata_table.txt,$@) $(subst phyloseq_object.rds,otu_table.txt,$@) $(subst phyloseq_object.rds,representative_sequences.fasta,$@) $(subst phyloseq_object.rds,taxonomy_table.txt,$@) $@
+
+ps_obj : $(ANCOMBC2_PS_16S_2) $(ANCOMBC_IN_16S)
