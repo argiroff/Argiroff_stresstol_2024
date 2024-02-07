@@ -268,7 +268,7 @@ $(FINAL_16S_OTU) : code/make_otu_tibbles.R\
 #### ANCOMBC2 input ####
 
 # 16S, split OTU tables and corresponding data
-ANCOMBC_IN_16S=data/processed/seq_data/16s/ancombc
+ANCOMBC_IN_16S=data/processed/seq_data/16s/ancombc/*_otu_table.txt
 
 $(ANCOMBC_IN_16S) : code/split_otu_for_ancombc.R\
 		$$(wildcard $$(FINAL_16S_OTU)*)
@@ -285,5 +285,6 @@ $(ANCOMBC_PS_16S_2) : code/ps_for_ancombc.R\
 		$$(subst phyloseq_object.rds,taxonomy_table.txt,$$@)
 	code/ps_for_ancombc.R $(subst phyloseq_object.rds,metadata_table.txt,$@) $(subst phyloseq_object.rds,otu_table.txt,$@) $(subst phyloseq_object.rds,representative_sequences.fasta,$@) $(subst phyloseq_object.rds,taxonomy_table.txt,$@) $@
 
-# ps_obj : $(ANCOMBC_PS_16S_2) $(ANCOMBC_IN_16S)
-ps_obj : $(ANCOMBC_PS_16S_2)
+ps_obj : $(ANCOMBC_PS_16S_2) $(METADATA_16S_BC) $(METADATA_16S_BOARD)\
+	$(METADATA_16S_DAVIS) $(METADATA_16S) $(FINAL_16S_OTU)\
+	$(FINAL_16S_OTU) $(ANCOMBC_IN_16S) $(ANCOMBC_PS_16S_2)
