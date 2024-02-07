@@ -4,9 +4,10 @@
 # author: William Argiroff
 # inputs : Sequence sample metadata files
 #   merged OTU qza, merged tax qza, merged repseq qza
-# output : Single uniform metadata file to merge with phyloseq object
-# notes : expects order of inputs (args ##-##) output
-#   expects input path ending in /reads/ and output path ending in data/16S/processed/
+# output : Tibbles (OTU, metadata, tax, sequence summary, and rep seq fasta)
+# notes : expects order of inputs, output
+#   expects input paths for merged OTU and rep seqs qzas, tax qza, and metadata
+#   and output data/processed/seq_data/16S/otu_processed/
 
 clargs <- commandArgs(trailingOnly = TRUE)
 

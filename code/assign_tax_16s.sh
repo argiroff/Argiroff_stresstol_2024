@@ -15,7 +15,7 @@ echo "Obtaining filepaths."
 
 infile1=`echo "$PWD"/"$1"`
 infile2=`echo "$PWD"/"$2"`
-outdir=`echo "$PWD"/"data/qiime2/16S/final_qzas/16S/otu_97_taxonomy"`
+outdir=`echo "$PWD"/"data/qiime2/final_qzas/16S/otu_97_taxonomy"`
 
 # Trim with ITSxpress
 progress=`echo "$infile" | sed -E "s/\/demux.qza//" | sed -E "s/(.*\/)//"`
