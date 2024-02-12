@@ -5,7 +5,7 @@ print-% :
 
 # Rule
 # target : prerequisite1 prerequisite2 prerequisite3
-# (tab)recipe (and other arguments that are passed to the BASH script)
+# (tab)recipe (and other arguments that are passed to the BASH[or other] script)
 
 #### Use R to make QIIME2 manifest files ####
 
@@ -199,7 +199,6 @@ $(TAX_ITS) : code/assign_tax_its.sh\
 #### Full QIIME2 rules ####
 
 # 16S
-
 qiime2_16s : $(MANIFEST_16S_OUT) $(IMPORT_16S_OUT) $(SUM_16S_OUT)\
 	$(TRIM_16S_OUT) $(SUM_16S_TRIM) $(DADA2_16S) $(SUM_16S_DADA2)\
 	$(MERGE_TAB_16S) $(MERGE_SEQS_16S) $(OTU_97_16S) $(TAX_16S)
@@ -256,35 +255,109 @@ $(METADATA_16S) : code/format_metadata_16s.R\
 
 #### Final OTU processed tibbles ####
 
-# 16S
-FINAL_16S_OTU=data/processed/seq_data/16S/otu_processed/
+# 16S, phyloseq untrimmed
+PS_16S_UNTRIMMED=data/processed/seq_data/16S/otu_processed/ps_untrimmed.rds
 
-$(FINAL_16S_OTU) : code/make_otu_tibbles.R\
+$(PS_16S_UNTRIMMED) : code/make_16s_ps_untrimmed.R\
 		$$(wildcard $$(OTU_97_16S)*.qza)\
 		$$(wildcard $$(TAX_16S)*.qza)\
 		$$(METADATA_16S)
-	code/make_otu_tibbles.R $(wildcard $(OTU_97_16S)*.qza) $(wildcard $(TAX_16S)*.qza) $(METADATA_16S) $@
+	code/make_16s_ps_untrimmed.R $(wildcard $(OTU_97_16S)*.qza) $(wildcard $(TAX_16S)*.qza) $(METADATA_16S) $@
 
-#### ANCOMBC2 input ####
+# 16S, phyloseq trimmed
+PS_16S_TRIMMED=data/processed/seq_data/16S/otu_processed/ps_trimmed.rds
 
-# 16S, split OTU tables and corresponding data
-ANCOMBC_IN_16S=data/processed/seq_data/16s/ancombc/*_otu_table.txt
+$(PS_16S_TRIMMED) : code/make_16s_ps_trimmed.R\
+		$$(PS_16S_UNTRIMMED)
+	code/make_16s_ps_trimmed.R $(PS_16S_UNTRIMMED) $@
 
-$(ANCOMBC_IN_16S) : code/split_otu_for_ancombc.R\
-		$$(wildcard $$(FINAL_16S_OTU)*)
-	code/split_otu_for_ancombc.R $(wildcard $(FINAL_16S_OTU)*) $@
+# 16S, OTU
+FINAL_16S_OTU=data/processed/seq_data/16S/otu_processed/otu_table.txt
 
-# 16S, split phyloseq objects
-ANCOMBC_PS_16S_1=$(wildcard $(ANCOMBC_IN_16S)/*)
-ANCOMBC_PS_16S_2=$(foreach path,$(ANCOMBC_PS_16S_1),$(path)/phyloseq_object.rds)
+$(FINAL_16S_OTU) : code/get_otu_tibble.R\
+		$$(PS_16S_TRIMMED)
+	code/get_otu_tibble.R $(PS_16S_TRIMMED) $@
 
-$(ANCOMBC_PS_16S_2) : code/ps_for_ancombc.R\
-		$$(subst phyloseq_object.rds,metadata_table.txt,$$@)\
-		$$(subst phyloseq_object.rds,otu_table.txt,$$@)\
-		$$(subst phyloseq_object.rds,representative_sequences.fasta,$$@)\
-		$$(subst phyloseq_object.rds,taxonomy_table.txt,$$@)
-	code/ps_for_ancombc.R $(subst phyloseq_object.rds,metadata_table.txt,$@) $(subst phyloseq_object.rds,otu_table.txt,$@) $(subst phyloseq_object.rds,representative_sequences.fasta,$@) $(subst phyloseq_object.rds,taxonomy_table.txt,$@) $@
+# 16S, metadata
+FINAL_16S_META=data/processed/seq_data/16S/otu_processed/metadata_table.txt
 
-ps_obj : $(ANCOMBC_PS_16S_2) $(METADATA_16S_BC) $(METADATA_16S_BOARD)\
-	$(METADATA_16S_DAVIS) $(METADATA_16S) $(FINAL_16S_OTU)\
-	$(FINAL_16S_OTU) $(ANCOMBC_IN_16S) $(ANCOMBC_PS_16S_2)
+$(FINAL_16S_META) : code/get_metadata_tibble.R\
+		$$(PS_16S_TRIMMED)\
+		$$(FINAL_16S_OTU)
+	code/get_metadata_tibble.R $(PS_16S_TRIMMED) $(FINAL_16S_OTU) $@
+
+# 16S, representative sequences
+FINAL_16S_REPSEQS=data/processed/seq_data/16S/otu_processed/representative_sequences.fasta
+
+$(FINAL_16S_REPSEQS) : code/get_repseqs_fasta.R\
+		$$(PS_16S_TRIMMED)\
+		$$(FINAL_16S_OTU)
+	code/get_repseqs_fasta.R $(PS_16S_TRIMMED) $(FINAL_16S_OTU) $@
+
+# 16S, taxonomy
+FINAL_16S_TAX=data/processed/seq_data/16S/otu_processed/taxonomy_table.txt
+
+$(FINAL_16S_TAX) : code/get_taxonomy_tibble.R\
+		$$(PS_16S_TRIMMED)\
+		$$(FINAL_16S_OTU)
+	code/get_taxonomy_tibble.R $(PS_16S_TRIMMED) $(FINAL_16S_OTU) $@
+
+# 16S sequence summary
+FINAL_16S_SUM=data/processed/seq_data/16S/otu_processed/sequence_summary.txt
+
+$(FINAL_16S_SUM) : code/get_seq_summary_tibble.R\
+		$$(PS_16S_UNTRIMMED)\
+		$$(PS_16S_TRIMMED)
+	code/get_seq_summary_tibble.R $(PS_16S_UNTRIMMED) $(PS_16S_TRIMMED) $@
+
+### ANCOMBC2 input ####
+
+# 16S, ANCOMBC phyloseq inputs
+ANCOMBC_16S_IN_NAMES=bc_re_2018 bc_re_2019 bc_rh_2018 bc_rh_2019\
+board_bs board_re board_rh davis_bs_summer davis_bs_winter davis_rh_summer\
+davis_rh_winter davis_bs_control davis_bs_drought davis_rh_control\
+davis_rh_drought location_bs location_re location_rh
+ANCOMBC_16S_IN_PATH=$(foreach path,$(ANCOMBC_16S_IN_NAMES),data/processed/seq_data/16S/ancombc/$(path))
+ANCOMBC_16S_IN=$(foreach path,$(ANCOMBC_16S_IN_PATH),$(path)_ps.rds)
+
+$(ANCOMBC_16S_IN) : code/get_ps_for_ancombc.R\
+		$$(FINAL_16S_META)\
+		$$(FINAL_16S_OTU)\
+		$$(FINAL_16S_REPSEQS)\
+		$$(FINAL_16S_TAX)
+	code/get_ps_for_ancombc.R $(FINAL_16S_META) $(FINAL_16S_OTU) $(FINAL_16S_REPSEQS) $(FINAL_16S_TAX) $@
+
+ancombc_16s : $(PS_16S_UNTRIMMED) $(PS_16S_TRIMMED) $(FINAL_16S_OTU)\
+$(FINAL_16S_META) $(FINAL_16S_REPSEQS) $(FINAL_16S_TAX)\
+$(FINAL_16S_SUM) $(ANCOMBC_16S_IN)
+
+
+
+
+
+
+#
+
+# # 16S, split OTU tables and corresponding data
+# ANCOMBC_IN_16S=data/processed/seq_data/16s/ancombc_in
+
+# $(ANCOMBC_IN_16S) : code/split_16s_otu_for_ancombc.R\
+# 		$$(wildcard $$(FINAL_16S_OTU)*)
+# 	code/split_16s_otu_for_ancombc.R $(wildcard $(FINAL_16S_OTU)*) $@
+
+# # 16S, split phyloseq objects
+# ANCOMBC_PS_16S_1=$(wildcard $(ANCOMBC_IN_16S)/*)
+# ANCOMBC_PS_16S_2=$(foreach path,$(ANCOMBC_PS_16S_1),$(path)/phyloseq_object.rds)
+
+# $(ANCOMBC_PS_16S_2) : code/ps_16s_for_ancombc.R\
+# 		$$(subst phyloseq_object.rds,metadata_table.txt,$$@)\
+# 		$$(subst phyloseq_object.rds,otu_table.txt,$$@)\
+# 		$$(subst phyloseq_object.rds,representative_sequences.fasta,$$@)\
+# 		$$(subst phyloseq_object.rds,taxonomy_table.txt,$$@)
+# 	code/ps_16s_for_ancombc.R $(subst phyloseq_object.rds,metadata_table.txt,$@) $(subst phyloseq_object.rds,otu_table.txt,$@) $(subst phyloseq_object.rds,representative_sequences.fasta,$@) $(subst phyloseq_object.rds,taxonomy_table.txt,$@) $@
+
+# ps_obj : $(ANCOMBC_IN_16S) $(ANCOMBC_PS_16S_2)
+
+# ps_obj : $(ANCOMBC_PS_16S_2) $(METADATA_16S_BC) $(METADATA_16S_BOARD)\
+# 	$(METADATA_16S_DAVIS) $(METADATA_16S) $(FINAL_16S_OTU)\
+# 	$(FINAL_16S_OTU) $(ANCOMBC_IN_16S) $(ANCOMBC_PS_16S_2)
