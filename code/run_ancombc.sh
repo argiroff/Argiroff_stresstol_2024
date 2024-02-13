@@ -7,9 +7,9 @@
 #SBATCH --mem-per-cpu=2G
 #SBATCH --job-name=abc_%a
 #SBATCH --output=abc_%a.out
-#SBATCH -p high_mem
+#SBATCH -p batch
 #SBATCH -A bsd
-#SBATCH --array=1-2
+#SBATCH --array=1-18%2
 
 cd /lustre/or-scratch/cades-bsd/7wa/stresstol_ancombc/ancombc/16S/
 
