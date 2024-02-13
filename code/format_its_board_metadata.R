@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript --vanilla
 
-# name : format_16s_board_metadata.R
+# name : format_its_board_metadata.R
 # author: William Argiroff
 # inputs : Sequence sample metadata files
 #   data/metadata/BOARD/BOARD_metadata_SraRunTable.txt
@@ -14,17 +14,17 @@ library(tidyverse)
 #### BOARD ####
 
 # Read in
-board_16s_metadata <- read_tsv(
+board_its_metadata <- read_tsv(
   file = clargs[1]
 ) %>%
-
-  filter(marker_gene == "16s") %>%
-
+  
+  filter(marker_gene == "its") %>%
+  
   select(
     Run, `Sample Name`, marker_gene, host_genotype, HOST,
     Organism, watering_regm, Collection_Date
   ) %>%
-
+  
   rename(
     sample_name = "Run",
     sample_id = "Sample Name",
@@ -34,55 +34,55 @@ board_16s_metadata <- read_tsv(
     treatment = "watering_regm",
     collection_date = "Collection_Date"
   ) %>%
-
+  
   mutate(
     community = ifelse(
-      community == "16s",
-      "Bacteria and Archaea",
+      community == "its",
+      "Fungi",
       community
     ),
-
+    
     plant_habitat = ifelse(
       plant_habitat == "soil metagenome",
       "Soil",
       plant_habitat
     ),
-
+    
     plant_habitat = ifelse(
       plant_habitat == "rhizosphere metagenome",
       "Rhizosphere",
       plant_habitat
     ),
-
+    
     plant_habitat = ifelse(
       plant_habitat == "root metagenome",
       "Root endosphere",
       plant_habitat
     ),
-
+    
     treatment = ifelse(
       treatment == "reduced",
       "Drought",
       treatment
     ),
-
+    
     treatment = ifelse(
       treatment == "full",
       "Control",
       treatment
     ),
-
+    
     season = NA_character_,
-
+    
     location = "Boardman, OR",
-
+    
     collection_year = NA_character_,
-
+    
     replicate = NA_character_,
-
+    
     cutting_location = NA_character_
   ) %>%
-
+  
   relocate(
     sample_name,
     sample_id,
@@ -101,6 +101,6 @@ board_16s_metadata <- read_tsv(
 
 # Save
 write_tsv(
-  board_16s_metadata,
+  board_its_metadata,
   file = clargs[2]
 )

@@ -224,31 +224,30 @@ $(METADATA_16S_BC) : code/format_16s_bc_metadata.R\
 
 # 16S, BOARD
 METADATA_16S_BOARD=data/processed/seq_data/16S/metadata_working/metadata_16s_board.txt
-METADATA_16S_BOARD_PRE=data/metadata/BOARD/BOARD_metadata_SraRunTable.txt
+METADATA_BOARD_PRE=data/metadata/BOARD/BOARD_metadata_SraRunTable.txt
 
 $(METADATA_16S_BOARD) : code/format_16s_board_metadata.R\
-		$$(METADATA_16S_BOARD_PRE)
-	code/format_16s_board_metadata.R $(METADATA_16S_BOARD_PRE) $@
+		$$(METADATA_BOARD_PRE)
+	code/format_16s_board_metadata.R $(METADATA_BOARD_PRE) $@
 
 # 16S, DAVIS
 METADATA_16S_DAVIS=data/processed/seq_data/16S/metadata_working/metadata_16s_davis.txt
-
 METADATA_16S_DAVIS_PRE1=$(wildcard data/qiime2/16S/DAVIS_*/manifest.txt)
-METADATA_16S_DAVIS_PRE2=$(wildcard data/metadata/DAVIS/*.txt)
+METADATA_DAVIS_PRE2=$(wildcard data/metadata/DAVIS/*.txt)
 
 $(METADATA_16S_DAVIS) : code/format_16s_davis_metadata.R\
 		$$(METADATA_16S_DAVIS_PRE1)\
-		$$(METADATA_16S_DAVIS_PRE2)
-	code/format_16s_davis_metadata.R $(METADATA_16S_DAVIS_PRE1) $(METADATA_16S_DAVIS_PRE2) $@
+		$$(METADATA_DAVIS_PRE2)
+	code/format_16s_davis_metadata.R $(METADATA_16S_DAVIS_PRE1) $(METADATA_DAVIS_PRE2) $@
 
 # 16S full
 METADATA_16S=data/processed/seq_data/16S/metadata_working/metadata_16s.txt
 
-$(METADATA_16S) : code/format_metadata_16s.R\
+$(METADATA_16S) : code/format_metadata.R\
 		$$(METADATA_16S_BC)\
 		$$(METADATA_16S_BOARD)\
 		$$(METADATA_16S_DAVIS)
-	code/format_metadata_16s.R $(METADATA_16S_BC) $(METADATA_16S_BOARD) $(METADATA_16S_DAVIS) $@
+	code/format_metadata.R $(METADATA_16S_BC) $(METADATA_16S_BOARD) $(METADATA_16S_DAVIS) $@
 
 #### Format sequence metadata, ITS ####
 
@@ -265,16 +264,31 @@ $(METADATA_ITS_BC) : code/format_its_bc_metadata.R\
 	code/format_its_bc_metadata.R $(METADATA_ITS_BC_PRE1) $(METADATA_ITS_BC_PRE2) $(METADATA_ITS_BC_PRE3) $@
 
 # ITS, BOARD
+METADATA_ITS_BOARD=data/processed/seq_data/ITS/metadata_working/metadata_its_board.txt
 
+$(METADATA_ITS_BOARD) : code/format_its_board_metadata.R\
+		$$(METADATA_BOARD_PRE)
+	code/format_its_board_metadata.R $(METADATA_BOARD_PRE) $@
 
 # ITS, DAVIS
+METADATA_ITS_DAVIS=data/processed/seq_data/ITS/metadata_working/metadata_its_davis.txt
+METADATA_ITS_DAVIS_PRE1=$(wildcard data/qiime2/ITS/DAVIS_*/manifest.txt)
 
+$(METADATA_ITS_DAVIS) : code/format_its_davis_metadata.R\
+		$$(METADATA_ITS_DAVIS_PRE1)\
+		$$(METADATA_DAVIS_PRE2)
+	code/format_its_davis_metadata.R $(METADATA_ITS_DAVIS_PRE1) $(METADATA_DAVIS_PRE2) $@
 
+# ITS full
+METADATA_ITS=data/processed/seq_data/ITS/metadata_working/metadata_its.txt
 
-# metadata_16s : $(METADATA_16S_BC) $(METADATA_16S_BOARD) $(METADATA_16S_DAVIS) $(METADATA_16S)
-# metadata_16s : $(METADATA_16S_BC)
+$(METADATA_ITS) : code/format_metadata.R\
+		$$(METADATA_ITS_BC)\
+		$$(METADATA_ITS_BOARD)\
+		$$(METADATA_ITS_DAVIS)
+	code/format_metadata.R $(METADATA_ITS_BC) $(METADATA_ITS_BOARD) $(METADATA_ITS_DAVIS) $@
 
-#### Final OTU processed tibbles ####
+#### Final processed phyloseq objects ####
 
 # 16S, phyloseq untrimmed
 PS_16S_UNTRIMMED=data/processed/seq_data/16S/otu_processed/ps_untrimmed.rds
@@ -291,6 +305,28 @@ PS_16S_TRIMMED=data/processed/seq_data/16S/otu_processed/ps_trimmed.rds
 $(PS_16S_TRIMMED) : code/make_16s_ps_trimmed.R\
 		$$(PS_16S_UNTRIMMED)
 	code/make_16s_ps_trimmed.R $(PS_16S_UNTRIMMED) $@
+
+# ITS, phyloseq untrimmed
+PS_ITS_UNTRIMMED=data/processed/seq_data/ITS/otu_processed/ps_untrimmed.rds
+
+$(PS_ITS_UNTRIMMED) : code/make_its_ps_untrimmed.R\
+		$$(wildcard $$(OTU_97_ITS)*.qza)\
+		$$(wildcard $$(TAX_ITS)*.qza)\
+		$$(METADATA_ITS)
+	code/make_its_ps_untrimmed.R $(wildcard $(OTU_97_ITS)*.qza) $(wildcard $(TAX_ITS)*.qza) $(METADATA_ITS) $@
+
+# ITS, phyloseq trimmed
+PS_ITS_TRIMMED=data/processed/seq_data/ITS/otu_processed/ps_trimmed.rds
+
+$(PS_ITS_TRIMMED) : code/make_its_ps_trimmed.R\
+		$$(PS_ITS_UNTRIMMED)
+	code/make_its_ps_trimmed.R $(PS_ITS_UNTRIMMED) $@
+
+ps : $(METADATA_16S_BC) $(METADATA_16S_BOARD) $(METADATA_16S_DAVIS) $(METADATA_16S)\
+$(METADATA_ITS_BC) $(METADATA_ITS_BOARD) $(METADATA_ITS_DAVIS) $(METADATA_ITS)\
+$(PS_16S_UNTRIMMED) $(PS_16S_TRIMMED) $(PS_ITS_UNTRIMMED) $(PS_ITS_TRIMMED)
+
+#### Final OTU processed tibbles ####
 
 # 16S, OTU
 FINAL_16S_OTU=data/processed/seq_data/16S/otu_processed/otu_table.txt
@@ -348,9 +384,9 @@ $(ANCOMBC_16S_IN) : code/get_ps_for_ancombc.R\
 		$$(FINAL_16S_TAX)
 	code/get_ps_for_ancombc.R $(FINAL_16S_META) $(FINAL_16S_OTU) $(FINAL_16S_REPSEQS) $(FINAL_16S_TAX) $@
 
-ancombc_16s : $(PS_16S_UNTRIMMED) $(PS_16S_TRIMMED) $(FINAL_16S_OTU)\
-$(FINAL_16S_META) $(FINAL_16S_REPSEQS) $(FINAL_16S_TAX)\
-$(FINAL_16S_SUM) $(ANCOMBC_16S_IN)
+# ancombc_16s : $(PS_16S_UNTRIMMED) $(PS_16S_TRIMMED) $(FINAL_16S_OTU)\
+# $(FINAL_16S_META) $(FINAL_16S_REPSEQS) $(FINAL_16S_TAX)\
+# $(FINAL_16S_SUM) $(ANCOMBC_16S_IN)
 
 
 

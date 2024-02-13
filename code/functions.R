@@ -1,4 +1,67 @@
 
+#### Function to rename columns ####
+
+rename_cols <- function(x) {
+  tmp1 <- c(
+    sample_code = "ID",
+    treatment = "Treatment",
+    treatment="Plot...3",
+    host_genotype = "Genotype",
+    sample_type = "Type"
+  )
+  
+  tmp2 <- rename(x, any_of(tmp1))
+  return(tmp2)
+}
+
+#### Function to add missing columns ####
+
+add_col <- function(x) {
+  tmp1 <- c(
+    sample_code = NA_character_,
+    sample_name = NA_character_,
+    sample_id = NA_character_,
+    community = NA_character_,
+    plant_habitat = NA_character_,
+    host_species = NA_character_,
+    host_genotype = NA_character_,
+    season = NA_character_,
+    collection_year = NA_character_,
+    replicate = NA_character_,
+    collection_date = NA_character_,
+    cutting_location = NA_character_,
+    treatment = NA_character_,
+    sample_type = NA_character_,
+    location = NA_character_
+  )
+  
+  tmp2 <- c(
+    "sample_code",
+    "sample_name",
+    "sample_id",
+    "community",
+    "plant_habitat",
+    "host_species",
+    "host_genotype",
+    "season",
+    "collection_year",
+    "replicate",
+    "collection_date",
+    "cutting_location",
+    "treatment",
+    "sample_type",
+    "location"
+  )
+  
+  tmp3 <- x %>%
+    
+    add_column(!!!tmp1[!names(tmp1) %in% names(.)]) %>%
+    
+    select(all_of(tmp2))
+  
+  return(tmp3)
+}
+
 #### Drop OTUs with no sequences ####
 
 drop_0seq_otus <- function(x) {

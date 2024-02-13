@@ -1,20 +1,19 @@
 #!/usr/bin/env Rscript --vanilla
 
-# name : format_metadata_its.R
+# name : format_metadata.R
 # author: William Argiroff
 # inputs : Sequence sample metadata files
-#   data/qiime2/ITS/*/manifest.txt
+#   data/qiime2/*/*/manifest.txt
 #   data/metadata/DAVIS/*.txt
 # output : Single uniform metadata file to merge with phyloseq object
-# notes : expects order of inputs (args ##-##) output
-#   expects input path ending in /reads/ and output path ending in data/16S/processed/
+# notes : expects order of inputs (args 1-3) output
 
 clargs <- commandArgs(trailingOnly = TRUE)
 
 library(tidyverse)
 
 # Read in
-metadata_16s <- clargs[1:3] %>%
+metadata <- clargs[1:3] %>%
   
   map(., .f = read_tsv) %>%
   
@@ -24,6 +23,6 @@ metadata_16s <- clargs[1:3] %>%
 
 # Save
 write_tsv(
-  metadata_16s,
+  metadata,
   file = clargs[4]
 )
