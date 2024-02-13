@@ -13,8 +13,8 @@
 
 cd /lustre/or-scratch/cades-bsd/7wa/stresstol_ancombc/ancombc/16S/
 
-infile=$(awk "NR==${SLURM_ARRAY_TASK_ID}" ancombc_infiles.txt)
-outfile=$(awk "NR==${SLURM_ARRAY_TASK_ID}" ancombc_outfiles.txt)
+infile=$(awk "NR==${SLURM_ARRAY_TASK_ID}" /lustre/or-scratch/cades-bsd/7wa/stresstol_ancombc/ancombc_infiles.txt)
+outfile=$(awk "NR==${SLURM_ARRAY_TASK_ID}" /lustre/or-scratch/cades-bsd/7wa/stresstol_ancombc/ancombc_outfiles.txt)
 
 source activate r-cades-ancombc
 

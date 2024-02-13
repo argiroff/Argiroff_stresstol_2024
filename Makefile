@@ -250,6 +250,27 @@ $(METADATA_16S) : code/format_metadata_16s.R\
 		$$(METADATA_16S_DAVIS)
 	code/format_metadata_16s.R $(METADATA_16S_BC) $(METADATA_16S_BOARD) $(METADATA_16S_DAVIS) $@
 
+#### Format sequence metadata, ITS ####
+
+# ITS, BC
+METADATA_ITS_BC=data/processed/seq_data/ITS/metadata_working/metadata_its_bc.txt # target
+METADATA_ITS_BC_PRE1=$(wildcard data/metadata/BC/ITS/*.csv)
+METADATA_ITS_BC_PRE2=$(wildcard data/metadata/BC/ITS/*.tsv)
+METADATA_ITS_BC_PRE3=data/metadata/BC/metadata_for_host_spp.txt
+
+$(METADATA_ITS_BC) : code/format_its_bc_metadata.R\
+		$$(METADATA_ITS_BC_PRE1)\
+		$$(METADATA_ITS_BC_PRE2)\
+		$$(METADATA_ITS_BC_PRE3)
+	code/format_its_bc_metadata.R $(METADATA_ITS_BC_PRE1) $(METADATA_ITS_BC_PRE2) $(METADATA_ITS_BC_PRE3) $@
+
+# ITS, BOARD
+
+
+# ITS, DAVIS
+
+
+
 # metadata_16s : $(METADATA_16S_BC) $(METADATA_16S_BOARD) $(METADATA_16S_DAVIS) $(METADATA_16S)
 # metadata_16s : $(METADATA_16S_BC)
 
