@@ -457,12 +457,39 @@ $(ANCOMBC_ITS_IN) : code/get_its_ps_for_ancombc.R\
 		$$(FINAL_ITS_TAX)
 	code/get_its_ps_for_ancombc.R $(FINAL_ITS_META) $(FINAL_ITS_OTU) $(FINAL_ITS_REPSEQS) $(FINAL_ITS_TAX) $@
 
-ancombc_in : $(ANCOMBC_16S_IN) $(ANCOMBC_ITS_IN)
+#### Run ANCOMBC2 ####
 
 
+#### SPIEC-EASI input ####
 
+SPIECEASI_IN_NAMES=full_bs full_re full_rh bc_re bc_rh\
+board_bs board_re board_rh davis_bs davis_re davis_rh
 
+SPIECEASI_IN_PATH=$(foreach path,$(SPIECEASI_IN_NAMES),data/processed/seq_data/spieceasi/$(path))
 
+# 16S inputs
+SPIECEASI_16S_IN=$(foreach path,$(SPIECEASI_IN_PATH),$(path)_16s_input.rds)
+
+$(SPIECEASI_16S_IN) : code/get_input_for_spieceasi.R\
+		$$(FINAL_16S_META)\
+		$$(FINAL_ITS_META)\
+		$$(FINAL_16S_OTU)\
+		$$(FINAL_ITS_OTU)
+	code/get_input_for_spieceasi.R $(FINAL_16S_META) $(FINAL_ITS_META) $(FINAL_16S_OTU) $(FINAL_ITS_OTU) $@
+
+# ITS inputs
+SPIECEASI_ITS_IN=$(foreach path,$(SPIECEASI_IN_PATH),$(path)_its_input.rds)
+
+$(SPIECEASI_ITS_IN) : code/get_input_for_spieceasi.R\
+		$$(FINAL_16S_META)\
+		$$(FINAL_ITS_META)\
+		$$(FINAL_16S_OTU)\
+		$$(FINAL_ITS_OTU)
+	code/get_input_for_spieceasi.R $(FINAL_16S_META) $(FINAL_ITS_META) $(FINAL_16S_OTU) $(FINAL_ITS_OTU) $@
+
+spieceasi_in : $(SPIECEASI_16S_IN) $(SPIECEASI_ITS_IN)
+
+#### Run SPIEC-EASI ####
 
 #
 
