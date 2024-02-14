@@ -32,7 +32,8 @@ metadata_its <- read_tsv(
   
   mutate(
     sample_id2 = str_remove(sample_id, "-ITS"),
-    sample_id2 = str_remove(sample_id2, "_its")
+    sample_id2 = str_remove(sample_id2, "_its"),
+    sample_id2 = str_replace(sample_id2, "_rhizo", "-rhizo")
   )
 
 # Get sample filter
@@ -140,7 +141,7 @@ if(str_detect(clargs[5], "full_bs")) {
   otu_trimmed <- otu %>%
     
     filter(
-      location == "DAVIS, CA" & plant_habitat == "Soil"
+      location == "Davis, CA" & plant_habitat == "Soil"
     )
   
 } else if(str_detect(clargs[5], "davis_re")) {
