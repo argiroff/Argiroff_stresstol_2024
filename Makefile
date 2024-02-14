@@ -288,7 +288,7 @@ $(METADATA_ITS) : code/format_metadata.R\
 		$$(METADATA_ITS_DAVIS)
 	code/format_metadata.R $(METADATA_ITS_BC) $(METADATA_ITS_BOARD) $(METADATA_ITS_DAVIS) $@
 
-#### Final processed phyloseq objects ####
+#### Final phyloseq objects ####
 
 # 16S, phyloseq untrimmed
 PS_16S_UNTRIMMED=data/processed/seq_data/16S/otu_processed/ps_untrimmed.rds
@@ -322,11 +322,7 @@ $(PS_ITS_TRIMMED) : code/make_its_ps_trimmed.R\
 		$$(PS_ITS_UNTRIMMED)
 	code/make_its_ps_trimmed.R $(PS_ITS_UNTRIMMED) $@
 
-ps : $(METADATA_16S_BC) $(METADATA_16S_BOARD) $(METADATA_16S_DAVIS) $(METADATA_16S)\
-$(METADATA_ITS_BC) $(METADATA_ITS_BOARD) $(METADATA_ITS_DAVIS) $(METADATA_ITS)\
-$(PS_16S_UNTRIMMED) $(PS_16S_TRIMMED) $(PS_ITS_UNTRIMMED) $(PS_ITS_TRIMMED)
-
-#### Final OTU processed tibbles ####
+#### Final OTU tibbles ####
 
 # 16S, OTU
 FINAL_16S_OTU=data/processed/seq_data/16S/otu_processed/otu_table.txt
@@ -334,6 +330,15 @@ FINAL_16S_OTU=data/processed/seq_data/16S/otu_processed/otu_table.txt
 $(FINAL_16S_OTU) : code/get_otu_tibble.R\
 		$$(PS_16S_TRIMMED)
 	code/get_otu_tibble.R $(PS_16S_TRIMMED) $@
+
+# ITS, OTU
+FINAL_ITS_OTU=data/processed/seq_data/ITS/otu_processed/otu_table.txt
+
+$(FINAL_ITS_OTU) : code/get_otu_tibble.R\
+		$$(PS_ITS_TRIMMED)
+	code/get_otu_tibble.R $(PS_ITS_TRIMMED) $@
+
+#### Final metadata tibbles ####
 
 # 16S, metadata
 FINAL_16S_META=data/processed/seq_data/16S/otu_processed/metadata_table.txt
@@ -343,6 +348,16 @@ $(FINAL_16S_META) : code/get_metadata_tibble.R\
 		$$(FINAL_16S_OTU)
 	code/get_metadata_tibble.R $(PS_16S_TRIMMED) $(FINAL_16S_OTU) $@
 
+# ITS, metadata
+FINAL_ITS_META=data/processed/seq_data/ITS/otu_processed/metadata_table.txt
+
+$(FINAL_ITS_META) : code/get_metadata_tibble.R\
+		$$(PS_ITS_TRIMMED)\
+		$$(FINAL_ITS_OTU)
+	code/get_metadata_tibble.R $(PS_ITS_TRIMMED) $(FINAL_ITS_OTU) $@
+
+#### Final representative sequence fasta ####
+
 # 16S, representative sequences
 FINAL_16S_REPSEQS=data/processed/seq_data/16S/otu_processed/representative_sequences.fasta
 
@@ -350,6 +365,16 @@ $(FINAL_16S_REPSEQS) : code/get_repseqs_fasta.R\
 		$$(PS_16S_TRIMMED)\
 		$$(FINAL_16S_OTU)
 	code/get_repseqs_fasta.R $(PS_16S_TRIMMED) $(FINAL_16S_OTU) $@
+
+# ITS, representative sequences
+FINAL_ITS_REPSEQS=data/processed/seq_data/ITS/otu_processed/representative_sequences.fasta
+
+$(FINAL_ITS_REPSEQS) : code/get_repseqs_fasta.R\
+		$$(PS_ITS_TRIMMED)\
+		$$(FINAL_ITS_OTU)
+	code/get_repseqs_fasta.R $(PS_ITS_TRIMMED) $(FINAL_ITS_OTU) $@
+
+#### Final taxonomy tibbles ####
 
 # 16S, taxonomy
 FINAL_16S_TAX=data/processed/seq_data/16S/otu_processed/taxonomy_table.txt
@@ -359,6 +384,16 @@ $(FINAL_16S_TAX) : code/get_taxonomy_tibble.R\
 		$$(FINAL_16S_OTU)
 	code/get_taxonomy_tibble.R $(PS_16S_TRIMMED) $(FINAL_16S_OTU) $@
 
+# ITS, taxonomy
+FINAL_ITS_TAX=data/processed/seq_data/ITS/otu_processed/taxonomy_table.txt
+
+$(FINAL_ITS_TAX) : code/get_taxonomy_tibble.R\
+		$$(PS_ITS_TRIMMED)\
+		$$(FINAL_ITS_OTU)
+	code/get_taxonomy_tibble.R $(PS_ITS_TRIMMED) $(FINAL_ITS_OTU) $@
+
+#### Final sequence summary tibbles ####
+
 # 16S sequence summary
 FINAL_16S_SUM=data/processed/seq_data/16S/otu_processed/sequence_summary.txt
 
@@ -367,6 +402,26 @@ $(FINAL_16S_SUM) : code/get_seq_summary_tibble.R\
 		$$(PS_16S_TRIMMED)
 	code/get_seq_summary_tibble.R $(PS_16S_UNTRIMMED) $(PS_16S_TRIMMED) $@
 
+# ITS sequence summary
+FINAL_ITS_SUM=data/processed/seq_data/ITS/otu_processed/sequence_summary.txt
+
+$(FINAL_ITS_SUM) : code/get_seq_summary_tibble.R\
+		$$(PS_ITS_UNTRIMMED)\
+		$$(PS_ITS_TRIMMED)
+	code/get_seq_summary_tibble.R $(PS_ITS_UNTRIMMED) $(PS_ITS_TRIMMED) $@
+
+#### Final tables rules ####
+
+# 16S
+otu_16s : $(METADATA_16S_BC) $(METADATA_16S_BOARD) $(METADATA_16S_DAVIS) $(METADATA_16S)\
+$(PS_16S_UNTRIMMED) $(PS_16S_TRIMMED) $(FINAL_16S_OTU) $(FINAL_16S_META)\
+$(FINAL_16S_REPSEQS) $(FINAL_16S_TAX) $(FINAL_16S_SUM)
+
+# ITS
+otu_its : $(METADATA_ITS_BC) $(METADATA_ITS_BOARD) $(METADATA_ITS_DAVIS) $(METADATA_ITS)\
+$(PS_ITS_UNTRIMMED) $(PS_ITS_TRIMMED) $(FINAL_ITS_OTU) $(FINAL_ITS_META)\
+$(FINAL_ITS_REPSEQS) $(FINAL_ITS_TAX) $(FINAL_ITS_SUM)
+
 ### ANCOMBC2 input ####
 
 # 16S, ANCOMBC phyloseq inputs
@@ -374,19 +429,35 @@ ANCOMBC_16S_IN_NAMES=bc_re_2018 bc_re_2019 bc_rh_2018 bc_rh_2019\
 board_bs board_re board_rh davis_bs_summer davis_bs_winter davis_rh_summer\
 davis_rh_winter davis_bs_control davis_bs_drought davis_rh_control\
 davis_rh_drought location_bs location_re location_rh
+
 ANCOMBC_16S_IN_PATH=$(foreach path,$(ANCOMBC_16S_IN_NAMES),data/processed/seq_data/16S/ancombc/$(path))
 ANCOMBC_16S_IN=$(foreach path,$(ANCOMBC_16S_IN_PATH),$(path)_ps.rds)
 
-$(ANCOMBC_16S_IN) : code/get_ps_for_ancombc.R\
+$(ANCOMBC_16S_IN) : code/get_16s_ps_for_ancombc.R\
 		$$(FINAL_16S_META)\
 		$$(FINAL_16S_OTU)\
 		$$(FINAL_16S_REPSEQS)\
 		$$(FINAL_16S_TAX)
-	code/get_ps_for_ancombc.R $(FINAL_16S_META) $(FINAL_16S_OTU) $(FINAL_16S_REPSEQS) $(FINAL_16S_TAX) $@
+	code/get_16s_ps_for_ancombc.R $(FINAL_16S_META) $(FINAL_16S_OTU) $(FINAL_16S_REPSEQS) $(FINAL_16S_TAX) $@
 
-# ancombc_16s : $(PS_16S_UNTRIMMED) $(PS_16S_TRIMMED) $(FINAL_16S_OTU)\
-# $(FINAL_16S_META) $(FINAL_16S_REPSEQS) $(FINAL_16S_TAX)\
-# $(FINAL_16S_SUM) $(ANCOMBC_16S_IN)
+# ITS, ANCOMBC phyloseq inputs
+ANCOMBC_ITS_IN_NAMES=bc_re_2018 bc_re_2019 bc_rh_2018 bc_rh_2019\
+board_bs board_re board_rh davis_bs_summer davis_bs_winter davis_re_summer\
+davis_re_winter davis_rh_summer davis_rh_winter davis_bs_control davis_bs_drought\
+davis_re_control davis_re_drought davis_rh_control davis_rh_drought\
+location_bs location_re location_rh
+
+ANCOMBC_ITS_IN_PATH=$(foreach path,$(ANCOMBC_ITS_IN_NAMES),data/processed/seq_data/ITS/ancombc/$(path))
+ANCOMBC_ITS_IN=$(foreach path,$(ANCOMBC_ITS_IN_PATH),$(path)_ps.rds)
+
+$(ANCOMBC_ITS_IN) : code/get_its_ps_for_ancombc.R\
+		$$(FINAL_ITS_META)\
+		$$(FINAL_ITS_OTU)\
+		$$(FINAL_ITS_REPSEQS)\
+		$$(FINAL_ITS_TAX)
+	code/get_its_ps_for_ancombc.R $(FINAL_ITS_META) $(FINAL_ITS_OTU) $(FINAL_ITS_REPSEQS) $(FINAL_ITS_TAX) $@
+
+ancombc_in : $(ANCOMBC_16S_IN) $(ANCOMBC_ITS_IN)
 
 
 
