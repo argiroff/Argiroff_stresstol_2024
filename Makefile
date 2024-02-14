@@ -410,7 +410,7 @@ $(FINAL_ITS_SUM) : code/get_seq_summary_tibble.R\
 		$$(PS_ITS_TRIMMED)
 	code/get_seq_summary_tibble.R $(PS_ITS_UNTRIMMED) $(PS_ITS_TRIMMED) $@
 
-#### Final tables rules ####
+#### Final table rules ####
 
 # 16S
 otu_16s : $(METADATA_16S_BC) $(METADATA_16S_BOARD) $(METADATA_16S_DAVIS) $(METADATA_16S)\
