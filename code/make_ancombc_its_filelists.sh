@@ -11,6 +11,6 @@
 
 cd /lustre/or-scratch/cades-bsd/7wa/stresstol_ancombc
 
-ls ancombc/16S/*_ps.rds > ancombc_infiles.txt
-cp ancombc_infiles.txt ancombc_outfiles.txt
-sed -i -E "s/\_ps.rds/\_ancombc_results.rds/g" ancombc_outfiles.txt
+ls ancombc/ITS/*_ps.rds > ancombc_its_infiles.txt
+cp ancombc_its_infiles.txt ancombc_its_outfiles.txt
+sed -i -E "s/\_ps.rds/\_ancombc_results.rds/g" ancombc_its_outfiles.txt

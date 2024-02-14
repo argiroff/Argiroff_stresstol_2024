@@ -1,15 +1,13 @@
 #!/usr/bin/env Rscript --vanilla
 
-# name : ancombc_16s.R
+# name : ancombc_its.R
 # author: William Argiroff
-# inputs : Files in ancombc_in/*/phyloseq_object.rds
-# output : ANCOMBC output as ancombc_out/*/ancombc_results.rds
+# inputs : Files in ancombc/ITS/*_ps.rds
+# output : ANCOMBC output as ancombc/ITS/*_ancombc_results.rds
 # notes : expects order of inputs, output
-#   expects input path data/processed/seq_data/16S/ancombc/*
-#   and output paths in data/processed/seq_data/16S/ancombc/*
+#   expects input path data/processed/seq_data/ITS/ancombc/*
+#   and output paths in data/processed/seq_data/ITS/ancombc/*
 #   generated within this script
-#   code/functions.R is a script that contains functions used in several
-#   other R scripts
 
 clargs <- commandArgs(trailingOnly = TRUE)
 
@@ -23,16 +21,16 @@ ps <- read_rds(
 
 # Select sequence cutoff
 if(str_detect(clargs[1], "bc_re_2018")) {
-  seq_cutoff <- 3000
+  seq_cutoff <- 1000
   
 } else if(str_detect(clargs[1], "bc_re_2019")) {
-  seq_cutoff <- 3000
+  seq_cutoff <- 1000
   
 } else if(str_detect(clargs[1], "bc_rh_2018")) {
-  seq_cutoff <- 3000
+  seq_cutoff <- 5000
   
 } else if(str_detect(clargs[1], "bc_rh_2019")) {
-  seq_cutoff <- 10000
+  seq_cutoff <- 5000
   
 } else if(str_detect(clargs[1], "board_bs")) {
   seq_cutoff <- 1000
@@ -44,40 +42,49 @@ if(str_detect(clargs[1], "bc_re_2018")) {
   seq_cutoff <- 1000
   
 } else if(str_detect(clargs[1], "davis_bs_control")) {
-  seq_cutoff <- 5000
+  seq_cutoff <- 2000
   
 } else if(str_detect(clargs[1], "davis_bs_drought")) {
-  seq_cutoff <- 20000
+  seq_cutoff <- 2000
   
 } else if(str_detect(clargs[1], "davis_bs_summer")) {
-  seq_cutoff <- 2000
+  seq_cutoff <- 1000
   
 } else if(str_detect(clargs[1], "davis_bs_winter")) {
-  seq_cutoff <- 20000
+  seq_cutoff <- 10000
+  
+} else if(str_detect(clargs[1], "davis_re_control")) {
+  seq_cutoff <- 200
+  
+} else if(str_detect(clargs[1], "davis_re_drought")) {
+  seq_cutoff <- 300
   
 } else if(str_detect(clargs[1], "davis_re_winter")) {
-  seq_cutoff <- 500
+  seq_cutoff <- 200
   
-} else if(str_detect(clargs[1], "davis_rh_control")) {
-  seq_cutoff <- 10000
+} else if(str_detect(clargs[1], "davis_re_summer")) {
+  seq_cutoff <- 1000
+  
+}else if(str_detect(clargs[1], "davis_rh_control")) {
+  seq_cutoff <- 5000
   
 } else if(str_detect(clargs[1], "davis_rh_drought")) {
-  seq_cutoff <- 10000
+  seq_cutoff <- 5000
   
 } else if(str_detect(clargs[1], "davis_rh_summer")) {
-  seq_cutoff <- 10000
+  seq_cutoff <- 2500
   
 } else if(str_detect(clargs[1], "davis_rh_winter")) {
-  seq_cutoff <- 2000
+  seq_cutoff <- 10000
   
 } else if(str_detect(clargs[1], "location_bs")) {
-  seq_cutoff <- 3000
+  seq_cutoff <- 1000
   
 } else if(str_detect(clargs[1], "location_re")) {
-  seq_cutoff <- 500
+  seq_cutoff <- 300
   
 } else if(str_detect(clargs[1], "location_rh")) {
-  seq_cutoff <- 1000
+  seq_cutoff <- 3000
   
 } else {
   print("Design not detected, using seq. cutoff of 0.")
@@ -93,13 +100,13 @@ bc_names <- paste(
 
 treatment_names <- paste(
   c("board_bs", "board_re", "board_rh", "davis_bs_summer", "davis_bs_winter",
-    "davis_re_winter", "davis_rh_summer", "davis_rh_winter"),
+    "davis_re_summer", "davis_re_winter", "davis_rh_summer", "davis_rh_winter"),
   collapse = "|"
 )
 
 davis_season_names <- paste(
   c("davis_bs_control", "davis_bs_drought", "davis_rh_control",
-    "davis_rh_drought"),
+    "davis_rh_drought", "davis_re_control", "davis_re_drought"),
   collapse = "|"
 )
 
