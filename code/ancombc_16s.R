@@ -133,7 +133,7 @@ if(str_detect(clargs[1], bc_names)) {
 } else if(str_detect(clargs[1], davis_season_names)) {
   ancombc_results <- ancombc2(
     data = ps,
-    fix_formula = "month",
+    fix_formula = "season",
     n_cl = 32,
     verbose = TRUE,
     lib_cut = seq_cutoff

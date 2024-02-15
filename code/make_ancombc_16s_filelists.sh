@@ -6,11 +6,11 @@
 #SBATCH --time=20:00:00
 #SBATCH --mem-per-cpu=64G
 #SBATCH --job-name=abclists
-#SBATCH -p high_mem
+#SBATCH -p batch
 #SBATCH -A bsd
 
-cd /lustre/or-scratch/cades-bsd/7wa/stresstol_ancombc
+cd /lustre/or-scratch/cades-bsd/7wa/stresstol_ancombc/ancombc/16S
 
-ls ancombc/16S/*_ps.rds > ancombc_16s_infiles.txt
+ls *_ps.rds > ancombc_16s_infiles.txt
 cp ancombc_16s_infiles.txt ancombc_16s_outfiles.txt
 sed -i -E "s/\_ps.rds/\_ancombc_results.rds/g" ancombc_16s_outfiles.txt
