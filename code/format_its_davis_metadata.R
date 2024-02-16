@@ -82,7 +82,7 @@ davis_its_metadata <- clargs[9:(length(clargs) - 1)] %>%
   mutate(
     location = "Davis, CA",
     host_species = "Populus trichocarpa",
-    community = "Bacteria and Archaea",
+    community = "Fungi",
     
     sample_type = ifelse(sample_type == "Rhizo", "RH", sample_type),
     sample_type = ifelse(sample_type == "Bulk Soil", "BS", sample_type),

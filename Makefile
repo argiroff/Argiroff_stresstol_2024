@@ -460,7 +460,18 @@ $(ANCOMBC_ITS_IN) : code/get_its_ps_for_ancombc.R\
 #### Run ANCOMBC2 ####
 
 
+
 #### SPIEC-EASI input ####
+
+# Combined 16S, ITS OTU table
+COMB_16S_ITS_OTU=data/processed/seq_data/spieceasi/comb_16s_its_otu.txt
+
+$(COMB_16S_ITS_OTU) : code/get_combined_16s_its_otu_table.R\
+		$$(FINAL_16S_META)\
+		$$(FINAL_ITS_META)\
+		$$(FINAL_16S_OTU)\
+		$$(FINAL_ITS_OTU)
+	code/get_combined_16s_its_otu_table.R $(FINAL_16S_META) $(FINAL_ITS_META) $(FINAL_16S_OTU) $(FINAL_ITS_OTU) $@
 
 SPIECEASI_IN_NAMES=full_bs full_re full_rh bc_re bc_rh\
 board_bs board_re board_rh davis_bs davis_re davis_rh
@@ -471,25 +482,21 @@ SPIECEASI_IN_PATH=$(foreach path,$(SPIECEASI_IN_NAMES),data/processed/seq_data/s
 SPIECEASI_16S_IN=$(foreach path,$(SPIECEASI_IN_PATH),$(path)_16s_input.rds)
 
 $(SPIECEASI_16S_IN) : code/get_input_for_spieceasi.R\
-		$$(FINAL_16S_META)\
-		$$(FINAL_ITS_META)\
-		$$(FINAL_16S_OTU)\
-		$$(FINAL_ITS_OTU)
-	code/get_input_for_spieceasi.R $(FINAL_16S_META) $(FINAL_ITS_META) $(FINAL_16S_OTU) $(FINAL_ITS_OTU) $@
+		$$(COMB_16S_ITS_OTU)
+	code/get_input_for_spieceasi.R $(COMB_16S_ITS_OTU) $@
 
 # ITS inputs
 SPIECEASI_ITS_IN=$(foreach path,$(SPIECEASI_IN_PATH),$(path)_its_input.rds)
 
 $(SPIECEASI_ITS_IN) : code/get_input_for_spieceasi.R\
-		$$(FINAL_16S_META)\
-		$$(FINAL_ITS_META)\
-		$$(FINAL_16S_OTU)\
-		$$(FINAL_ITS_OTU)
-	code/get_input_for_spieceasi.R $(FINAL_16S_META) $(FINAL_ITS_META) $(FINAL_16S_OTU) $(FINAL_ITS_OTU) $@
+		$$(COMB_16S_ITS_OTU)
+	code/get_input_for_spieceasi.R $(COMB_16S_ITS_OTU) $@
 
-spieceasi_in : $(SPIECEASI_16S_IN) $(SPIECEASI_ITS_IN)
+spieceasi_in : $(COMB_16S_ITS_OTU) $(SPIECEASI_16S_IN) $(SPIECEASI_ITS_IN)
+
 
 #### Run SPIEC-EASI ####
+ancombc : $(ANCOMBC_16S_IN) $(ANCOMBC_ITS_IN)
 
 #
 
