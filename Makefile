@@ -492,10 +492,23 @@ $(SPIECEASI_ITS_IN) : code/get_input_for_spieceasi.R\
 		$$(COMB_16S_ITS_OTU)
 	code/get_input_for_spieceasi.R $(COMB_16S_ITS_OTU) $@
 
+#### Run SPIEC-EASI ####
+
+
+
+
+
+
+
+
+
+
+
+
 spieceasi_in : $(COMB_16S_ITS_OTU) $(SPIECEASI_16S_IN) $(SPIECEASI_ITS_IN)
 
 
-#### Run SPIEC-EASI ####
+
 ancombc : $(ANCOMBC_16S_IN) $(ANCOMBC_ITS_IN)
 
 #
