@@ -22,61 +22,61 @@ ps <- read_rds(
 )
 
 # Select sequence cutoff
-if(str_detect(clargs[1], "bc_re_2018")) {
+if(clargs[1] == "bc_re_2018_ps.rds") {
   seq_cutoff <- 3000
   
-} else if(str_detect(clargs[1], "bc_re_2019")) {
+} else if(clargs[1] == "bc_re_2019_ps.rds") {
   seq_cutoff <- 3000
   
-} else if(str_detect(clargs[1], "bc_rh_2018")) {
+} else if(clargs[1] == "bc_rh_2018_ps.rds") {
   seq_cutoff <- 3000
   
-} else if(str_detect(clargs[1], "bc_rh_2019")) {
+} else if(clargs[1] == "bc_rh_2019_ps.rds") {
   seq_cutoff <- 10000
   
-} else if(str_detect(clargs[1], "board_bs")) {
+} else if(clargs[1] == "board_bs_ps.rds") {
   seq_cutoff <- 1000
   
-} else if(str_detect(clargs[1], "board_re")) {
+} else if(clargs[1] == "board_re_ps.rds") {
   seq_cutoff <- 1000
   
-} else if(str_detect(clargs[1], "board_rh")) {
+} else if(clargs[1] == "board_rh_ps.rds") {
   seq_cutoff <- 1000
   
-} else if(str_detect(clargs[1], "davis_bs_control")) {
+} else if(clargs[1] == "davis_bs_control_ps.rds") {
   seq_cutoff <- 5000
   
-} else if(str_detect(clargs[1], "davis_bs_drought")) {
+} else if(clargs[1] == "davis_bs_drought_ps.rds") {
   seq_cutoff <- 20000
   
-} else if(str_detect(clargs[1], "davis_bs_summer")) {
+} else if(clargs[1] == "davis_bs_summer_ps.rds") {
   seq_cutoff <- 2000
   
-} else if(str_detect(clargs[1], "davis_bs_winter")) {
+} else if(clargs[1] == "davis_bs_winter_ps.rds") {
   seq_cutoff <- 20000
   
-} else if(str_detect(clargs[1], "davis_re_winter")) {
+} else if(clargs[1] == "davis_re_winter_ps.rds") {
   seq_cutoff <- 500
   
-} else if(str_detect(clargs[1], "davis_rh_control")) {
+} else if(clargs[1] == "davis_rh_control_ps.rds") {
   seq_cutoff <- 10000
   
-} else if(str_detect(clargs[1], "davis_rh_drought")) {
+} else if(clargs[1] == "davis_rh_drought_ps.rds") {
   seq_cutoff <- 10000
   
-} else if(str_detect(clargs[1], "davis_rh_summer")) {
+} else if(clargs[1] == "davis_rh_summer_ps.rds") {
   seq_cutoff <- 10000
   
-} else if(str_detect(clargs[1], "davis_rh_winter")) {
+} else if(clargs[1] == "davis_rh_winter_ps.rds") {
   seq_cutoff <- 2000
   
-} else if(str_detect(clargs[1], "location_bs")) {
+} else if(clargs[1] == "location_bs_ps.rds") {
   seq_cutoff <- 3000
   
-} else if(str_detect(clargs[1], "location_re")) {
+} else if(clargs[1] == "location_re_ps.rds") {
   seq_cutoff <- 500
   
-} else if(str_detect(clargs[1], "location_rh")) {
+} else if(clargs[1] == "location_rh_ps.rds") {
   seq_cutoff <- 1000
   
 } else {
@@ -86,30 +86,39 @@ if(str_detect(clargs[1], "bc_re_2018")) {
 }
 
 # Names to determine ANCOMBC2 formula
-bc_names <- paste(
-  c("bc_re_2018", "bc_re_2019", "bc_rh_2018", "bc_rh_2019"),
-  collapse = "|"
+bc_names <- c(
+  "bc_re_2018_ps.rds",
+  "bc_re_2019_ps.rds",
+  "bc_rh_2018_ps.rds",
+  "bc_rh_2019_ps.rds"
 )
 
-treatment_names <- paste(
-  c("board_bs", "board_re", "board_rh", "davis_bs_summer", "davis_bs_winter",
-    "davis_re_winter", "davis_rh_summer", "davis_rh_winter"),
-  collapse = "|"
+treatment_names <- c(
+  "board_bs_ps.rds",
+  "board_re_ps.rds",
+  "board_rh_ps.rds",
+  "davis_bs_summer_ps.rds",
+  "davis_bs_winter_ps.rds",
+  "davis_re_winter_ps.rds",
+  "davis_rh_summer_ps.rds",
+  "davis_rh_winter_ps.rds"
 )
 
-davis_season_names <- paste(
-  c("davis_bs_control", "davis_bs_drought", "davis_rh_control",
-    "davis_rh_drought"),
-  collapse = "|"
+davis_season_names <- c(
+  "davis_bs_control_ps.rds",
+  "davis_bs_drought_ps.rds",
+  "davis_rh_control_ps.rds",
+  "davis_rh_drought_ps.rds"
 )
 
-location_names <- paste(
-  c("location_bs", "location_re", "location_rh"),
-  collapse = "|"
+location_names <- c(
+  "location_bs_ps.rds",
+  "location_re_ps.rds",
+  "location_rh_ps.rds"
 )
 
 # Run ANCOMBC2
-if(str_detect(clargs[1], bc_names)) {
+if(clargs[1] %in% bc_names) {
   ancombc_results <- ancombc2(
     data = ps,
     fix_formula = "season",
@@ -121,7 +130,7 @@ if(str_detect(clargs[1], bc_names)) {
     lib_cut = seq_cutoff
   )
   
-} else if(str_detect(clargs[1], treatment_names)) {
+} else if(clargs[1] %in% treatment_names) {
   ancombc_results <- ancombc2(
     data = ps,
     fix_formula = "treatment",
@@ -130,7 +139,7 @@ if(str_detect(clargs[1], bc_names)) {
     lib_cut = seq_cutoff
   )
   
-} else if(str_detect(clargs[1], davis_season_names)) {
+} else if(clargs[1] %in% davis_season_names) {
   ancombc_results <- ancombc2(
     data = ps,
     fix_formula = "season",
@@ -139,7 +148,7 @@ if(str_detect(clargs[1], bc_names)) {
     lib_cut = seq_cutoff
   )
   
-} else if(str_detect(clargs[1], location_names)) {
+} else if(clargs[1] %in% location_names) {
   ancombc_results <- ancombc2(
     data = ps,
     fix_formula = "location",

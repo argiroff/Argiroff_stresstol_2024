@@ -459,6 +459,8 @@ $(ANCOMBC_ITS_IN) : code/get_its_ps_for_ancombc.R\
 
 #### Run ANCOMBC2 ####
 
+## Run on CADES HPC ##
+
 
 
 #### SPIEC-EASI input ####
@@ -496,6 +498,52 @@ $(SPIECEASI_ITS_IN) : code/get_input_for_spieceasi.R\
 
 
 
+#### BLASTN against culture collection ####
+
+
+#### BLASTN against sequenced genomes ####
+
+
+#### Summarize ANCOMBC ####
+
+# Extract 16S OTU responses
+ANCOMBC_16S_EXT=$(foreach path,$(ANCOMBC_16S_IN_PATH),$(path)_ancombc_results.txt)
+
+$(ANCOMBC_16S_EXT) : code/extract_ancombc_results.R\
+		$$(subst .txt,.rds,$$@)
+	code/extract_ancombc_results.R $(subst .txt,.rds,$@) $@
+
+# Extract ITS OTU responses
+ANCOMBC_ITS_EXT=$(foreach path,$(ANCOMBC_ITS_IN_PATH),$(path)_ancombc_results.txt)
+
+$(ANCOMBC_ITS_EXT) : code/extract_ancombc_results.R\
+		$$(subst .txt,.rds,$$@)
+	code/extract_ancombc_results.R $(subst .txt,.rds,$@) $@
+
+# Volcano plots, 16S
+
+
+# Volcano plots, ITS
+
+
+# Combine ANCOMBC results, 16S
+ANCOMBC_16S_COMB=data/processed/seq_data/16S/ancombc/ancombc_results.txt
+
+$(ANCOMBC_16S_COMB) : code/combine_ancombc_results.R\
+		$$(ANCOMBC_16S_EXT)
+	code/combine_ancombc_results.R $(ANCOMBC_16S_EXT) $@
+
+#  Combine ANCOMBC results, ITS
+ANCOMBC_ITS_COMB=data/processed/seq_data/ITS/ancombc/ancombc_results.txt
+
+$(ANCOMBC_ITS_COMB) : code/combine_ancombc_results.R\
+		$$(ANCOMBC_ITS_EXT)
+	code/combine_ancombc_results.R $(ANCOMBC_ITS_EXT) $@
+
+# Summarise ANCOMBC results
+
+
+ancombc : $(ANCOMBC_16S_EXT) $(ANCOMBC_ITS_EXT) $(ANCOMBC_16S_COMB) $(ANCOMBC_ITS_COMB)
 
 
 
@@ -504,12 +552,11 @@ $(SPIECEASI_ITS_IN) : code/get_input_for_spieceasi.R\
 
 
 
-
-spieceasi_in : $(COMB_16S_ITS_OTU) $(SPIECEASI_16S_IN) $(SPIECEASI_ITS_IN)
-
+# spieceasi_in : $(COMB_16S_ITS_OTU) $(SPIECEASI_16S_IN) $(SPIECEASI_ITS_IN)
 
 
-ancombc : $(ANCOMBC_16S_IN) $(ANCOMBC_ITS_IN)
+
+# ancombc : $(ANCOMBC_16S_IN) $(ANCOMBC_ITS_IN)
 
 #
 

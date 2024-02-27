@@ -17,6 +17,7 @@ rename_cols <- function(x) {
 #### Function to add missing columns ####
 
 add_col <- function(x) {
+  
   tmp1 <- c(
     sample_code = NA_character_,
     sample_name = NA_character_,
@@ -60,6 +61,7 @@ add_col <- function(x) {
     select(all_of(tmp2))
   
   return(tmp3)
+  
 }
 
 #### Drop OTUs with no sequences ####
@@ -164,6 +166,24 @@ get_sample_id_filter <- function(otu.ba, otu.fungi) {
     pull(sample_id2)
   
   return(tmp2)
+  
+}
+
+#### Function to pivot ANCOMBC results ####
+
+pivot_ancombc <- function(x) {
+  
+  tmp1 <- x %>%
+    select(
+      -starts_with("diff")
+    ) %>%
+    pivot_longer(
+      -otu_id,
+      names_to = "comparison",
+      values_to = "value"
+    )
+  
+  return(tmp1)
   
 }
 

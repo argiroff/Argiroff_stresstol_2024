@@ -6,3 +6,4 @@ code/.DS_Store
 .Rhistory
 code/qiime2scripts/
 code/extra.R
+results/

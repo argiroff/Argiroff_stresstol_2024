@@ -68,12 +68,12 @@ board_names <- c(
   "board_bs", "board_re", "board_rh"
 )
 
-davis_season_names <- c(
+davis_treatment_names <- c(
   "davis_bs_summer", "davis_bs_winter", "davis_re_summer",
   "davis_re_winter", "davis_rh_summer", "davis_rh_winter"
 )
 
-davis_treatment_names <- c(
+davis_season_names <- c(
   "davis_bs_control", "davis_bs_drought", "davis_re_control",
   "davis_re_drought", "davis_rh_control", "davis_rh_drought"
 )
@@ -114,7 +114,7 @@ if(filename %in% bc_names) {
     
     map(., .f = drop_0seq_samples)
   
-} else if(filename %in% davis_season_names) {
+} else if(filename %in% davis_treatment_names) {
   # Split files, DAVIS season
   otu_split <- otu$DAVIS %>%
     
@@ -132,7 +132,7 @@ if(filename %in% bc_names) {
     
     map(., .f = drop_0seq_samples)
   
-} else if(filename %in% davis_treatment_names) {
+} else if(filename %in% davis_season_names) {
   # Split files, DAVIS treatment
   otu_split <- otu$DAVIS %>%
     
@@ -254,7 +254,7 @@ if(filename %in% bc_names) {
 } else if(filename %in% davis_season_names) {
   sample_data(ps)$season <- factor(
     sample_data(ps)$season,
-    levels = c("Summer", "Winter")
+    levels = c("Winter", "Summer")
   )
   
 } else if(filename %in% davis_treatment_names) {
