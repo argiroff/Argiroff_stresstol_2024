@@ -11,10 +11,7 @@ clargs <- commandArgs(trailingOnly = TRUE)
 library(tidyverse)
 library(cowplot)
 
-clargs <- c(
-  "data/processed/seq_data/16S/ancombc/bc_rh_2019_ancombc_results.txt",
-  "results/bc_rh_2019_volcano_plot.pdf"
-  )
+source("code/functions.R")
 
 # Get input file
 indir <- paste(dirname(clargs[1]), "/", sep = "")
@@ -23,58 +20,7 @@ in_name <- str_remove(infile, "_ancombc_results.txt")
 
 # Format ancombc results
 ancombc <- read_tsv(clargs[1]) %>%
-  
-  # Select variables
-  select(
-    otu_id,
-    starts_with("lfc_"),
-    starts_with("p_"),
-    starts_with("pcorr_")
-  ) %>%
-  
-  # Long format
-  pivot_longer(
-    -otu_id,
-    names_to = "comparison",
-    values_to = "value"
-  ) %>%
-  
-  # Get statistic type and comparison
-  separate(
-    comparison,
-    into = c("statistic", "comparison"),
-    sep = "_",
-    extra = "merge"
-  ) %>%
-  
-  # Wide format
-  pivot_wider(
-    id_cols = c(otu_id, comparison),
-    names_from = "statistic",
-    values_from = "value"
-  )
-
-#### Function for volcano significance level ####
-
-volcano_sig_label <- function(pval, pcorr.val) {
-  
-  if(pval <= 0.05 & pcorr.val > 0.05) {
-    
-    tmp1 <- "italic(P)<0.05"
-    
-  } else if(pval <= 0.05 & pcorr.val <= 0.05) {
-    
-    tmp1 <- "italic(P[adj.])<0.05"
-    
-  } else {
-    
-    tmp1 <- "italic(n.s)"
-    
-  }
-  
-  return(tmp1)
-  
-}
+  pivot_ancombc(.)
 
 # Seasonal names
 bc_seasonal_names <- c(
@@ -84,6 +30,37 @@ bc_seasonal_names <- c(
   "bc_rh_2019"
 )
 
+# Treatment names
+treatment_names <- c(
+  "board_bs",
+  "board_re",
+  "board_rh",
+  "davis_bs_summer",
+  "davis_bs_winter",
+  "davis_re_summer",
+  "davis_re_winter",
+  "davis_rh_summer",
+  "davis_rh_winter"
+)
+
+# Davis season names
+davis_season_names <- c(
+  "davis_bs_control",
+  "davis_bs_drought",
+  "davis_re_control",
+  "davis_re_drought",
+  "davis_rh_control",
+  "davis_rh_drought"
+)
+
+# Location
+location_names_temp <- "location_bs"
+
+location_names <- c(
+  "location_re",
+  "location_rh"
+)
+
 # Format for plot 
 if(in_name %in% bc_seasonal_names) {
   
@@ -91,14 +68,7 @@ if(in_name %in% bc_seasonal_names) {
     filter(!str_detect(comparison, "global_")) %>%
     
     # Calculate log10 P values and add a significance label
-    mutate(
-      log10_p = -1 * log10(p),
-      sig_label = map2_chr(p, pcorr, .f = volcano_sig_label),
-      sig_label = factor(
-        sig_label,
-        levels = c("italic(P[adj.])<0.05", "italic(P)<0.05", "italic(n.s)")
-      )
-    ) %>%
+    format_volcano_data(.) %>%
     
     # Update labels
     mutate(
@@ -111,14 +81,45 @@ if(in_name %in% bc_seasonal_names) {
       )
     )
   
-} else if() {
+} else if(in_name %in% c(treatment_names, davis_season_names, location_names_temp)) {
   
+  # Format
+  ancombc_input <- ancombc %>%
+    
+    # Calculate log10 P values and add a significance label
+    format_volcano_data(.) %>%
+    
+    # Update labels
+    mutate(
+      comparison = str_replace(comparison, "_", " vs. ")
+    )
+    
+} else if(in_name %in% location_names) {
   
+  # Format
+  ancombc_input <- ancombc %>%
+    filter(!str_detect(comparison, "global_")) %>%
+    
+    # Calculate log10 P values and add a significance label
+    format_volcano_data(.) %>%
+    
+    # Update labels
+    mutate(
+      comparison = str_replace(comparison, "_", " vs. "),
+      comparison = factor(
+        comparison,
+        levels = c("Boardman vs. BlountCounty",
+                   "Davis vs. BlountCounty",
+                   "Davis vs. Boardman")
+      )
+    )
   
 }
 
 # Plot
 volcano_plot <- ggplot() +
+  
+  scale_y_continuous(expand = expansion(mult = 0.1)) +
   
   geom_point(
     data = ancombc_input,
@@ -167,58 +168,150 @@ volcano_plot <- ggplot() +
 # Plot title
 if(in_name == "bc_re_2018") {
   
-  volcano_plot_final <- volcano_plot +
-    labs(title = "Blount County, 2018: Root endosphere")
+  plot_title = "Blount County, 2018: Root endosphere"
   
-  ggsave2(
-    filename = clargs[2],
-    plot = volcano_plot_final,
-    device = "pdf",
-    width = 6.5,
-    height = 6,
-    units = "in"
-  )
+  fig_height <- 6
   
 } else if(in_name == "bc_re_2019") {
   
-  volcano_plot_final <- volcano_plot +
-    labs(title = "Blount County, 2019: Root endosphere")
+  plot_title <- "Blount County, 2019: Root endosphere"
   
-  ggsave2(
-    filename = clargs[2],
-    plot = volcano_plot_final,
-    device = "pdf",
-    width = 6.5,
-    height = 6,
-    units = "in"
-  )
+  fig_height <- 6
   
 } else if(in_name == "bc_rh_2018") {
   
-  volcano_plot_final <- volcano_plot +
-    labs(title = "Blount County, 2018: Rhizosphere")
+  plot_title <- "Blount County, 2018: Rhizosphere"
   
-  ggsave2(
-    filename = clargs[2],
-    plot = volcano_plot_final,
-    device = "pdf",
-    width = 6.5,
-    height = 6,
-    units = "in"
-  )
+  fig_height <- 6
   
 } else if(in_name == "bc_rh_2019") {
   
-  volcano_plot_final <- volcano_plot +
-    labs(title = "Blount County, 2019: Rhizosphere")
+  plot_title <- "Blount County, 2019: Rhizosphere"
   
-  ggsave2(
-    filename = clargs[2],
-    plot = volcano_plot_final,
-    device = "pdf",
-    width = 6.5,
-    height = 6,
-    units = "in"
-  )
+  fig_height <- 6
+  
+} else if(in_name == "board_bs") {
+  
+  plot_title <- "Boardman: Soil"
+  
+  fig_height <- 4.5
+  
+} else if(in_name == "board_re") {
+  
+  plot_title <- "Boardman: Root endosphere"
+  
+  fig_height <- 4.5
+  
+} else if(in_name == "board_rh") {
+  
+  plot_title <- "Boardman: Rhizosphere"
+  
+  fig_height <- 4.5
+  
+} else if(in_name == "davis_bs_summer") {
+  
+  plot_title <- "Davis, Summer: Soil"
+  
+  fig_height <- 4.5
+  
+} else if(in_name == "davis_bs_winter") {
+  
+  plot_title <- "Davis, Winter: Soil"
+  
+  fig_height <- 4.5
+  
+} else if(in_name == "davis_re_summer") {
+  
+  plot_title <- "Davis, Summer: Root endosphere"
+  
+  fig_height <- 4.5
+  
+} else if(in_name == "davis_re_winter") {
+  
+  plot_title <- "Davis, Winter: Root endosphere"
+  
+  fig_height <- 4.5
+  
+} else if(in_name == "davis_rh_summer") {
+  
+  plot_title <- "Davis, Summer: Rhizosphere"
+  
+  fig_height <- 4.5
+  
+} else if(in_name == "davis_rh_winter") {
+  
+  plot_title <- "Davis, Winter: Rhizosphere"
+  
+  fig_height <- 4.5
+  
+} else if(in_name == "davis_bs_control") {
+  
+  plot_title <- "Davis, Control: Soil"
+  
+  fig_height <- 4.5
+  
+} else if(in_name == "davis_bs_drought") {
+  
+  plot_title <- "Davis, Drought: Soil"
+  
+  fig_height <- 4.5
+  
+} else if(in_name == "davis_re_control") {
+  
+  plot_title <- "Davis, Control: Root endosphere"
+  
+  fig_height <- 4.5
+  
+} else if(in_name == "davis_re_drought") {
+  
+  plot_title <- "Davis, Drought: Root endosphere"
+  
+  fig_height <- 4.5
+  
+} else if(in_name == "davis_rh_control") {
+  
+  plot_title <- "Davis, Control: Rhizosphere"
+  
+  fig_height <- 4.5
+  
+} else if(in_name == "davis_rh_drought") {
+  
+  plot_title <- "Davis, Drought: Rhizosphere"
+  
+  fig_height <- 4.5
+  
+} else if(in_name == "location_bs") {
+  
+  plot_title <- "Geographic location: Soil"
+  
+  fig_height <- 4.5
+  
+} else if(in_name == "location_re") {
+  
+  plot_title <- "Geographic location: Root endosphere"
+  
+  fig_height <- 4.5
+  
+} else if(in_name == "location_rh") {
+  
+  plot_title <- "Geographic location: Rhizosphere"
+  
+  fig_height <- 4.5
   
 }
+
+# Add title
+volcano_plot_final <- volcano_plot +
+  labs(title = plot_title)
+
+# Save
+ggsave2(
+  filename = clargs[2],
+  plot = volcano_plot_final,
+  device = "pdf",
+  width = 6.5,
+  height = fig_height,
+  units = "in"
+)
+
+file.remove("Rplots.pdf")

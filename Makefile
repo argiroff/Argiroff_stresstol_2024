@@ -520,12 +520,6 @@ $(ANCOMBC_ITS_EXT) : code/extract_ancombc_results.R\
 		$$(subst .txt,.rds,$$@)
 	code/extract_ancombc_results.R $(subst .txt,.rds,$@) $@
 
-# Volcano plots, 16S
-
-
-# Volcano plots, ITS
-
-
 # Combine ANCOMBC results, 16S
 ANCOMBC_16S_COMB=data/processed/seq_data/16S/ancombc/ancombc_results.txt
 
@@ -540,9 +534,28 @@ $(ANCOMBC_ITS_COMB) : code/combine_ancombc_results.R\
 		$$(ANCOMBC_ITS_EXT)
 	code/combine_ancombc_results.R $(ANCOMBC_ITS_EXT) $@
 
+# Volcano plots, 16S
+VOLCANO_16S_PATH=$(subst data/processed/seq_data/16S/ancombc,results,$(ANCOMBC_16S_EXT))
+VOLCANO_16S=$(subst ancombc_results.txt,16s_volcano_plot.pdf,$(VOLCANO_16S_PATH))
+
+$(VOLCANO_16S) : code/make_volcano_plots.R\
+		$$(subst 16s_volcano_plot.pdf,ancombc_results.txt,$$(subst results,data/processed/seq_data/ITS/ancombc, $$@))
+	code/make_volcano_plots.R $(subst 16s_volcano_plot.pdf,ancombc_results.txt,$(subst results,data/processed/seq_data/16S/ancombc, $@)) $@
+
+# Volcano plots, ITS
+VOLCANO_ITS_PATH=$(subst data/processed/seq_data/ITS/ancombc,results,$(ANCOMBC_ITS_EXT))
+VOLCANO_ITS=$(subst ancombc_results.txt,its_volcano_plot.pdf,$(VOLCANO_ITS_PATH))
+
+$(VOLCANO_ITS) : code/make_volcano_plots.R\
+		$$(subst its_volcano_plot.pdf,ancombc_results.txt,$$(subst results,data/processed/seq_data/ITS/ancombc, $$@))
+	code/make_volcano_plots.R $(subst its_volcano_plot.pdf,ancombc_results.txt,$(subst results,data/processed/seq_data/ITS/ancombc, $@)) $@
+
+volcano : $(ANCOMBC_16S_COMB) $(ANCOMBC_ITS_COMB) $(VOLCANO_16S) $(VOLCANO_ITS)
+
+
 # Summarise ANCOMBC results
 
-
+TEST1=$(subst volcano_plot.pdf,ancombc_results.txt,$(subst results,data/processed/seq_data/ITS/ancombc, $(VOLCANO_ITS)))
 ancombc : $(ANCOMBC_16S_EXT) $(ANCOMBC_ITS_EXT) $(ANCOMBC_16S_COMB) $(ANCOMBC_ITS_COMB)
 
 

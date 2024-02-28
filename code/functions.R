@@ -174,13 +174,77 @@ get_sample_id_filter <- function(otu.ba, otu.fungi) {
 pivot_ancombc <- function(x) {
   
   tmp1 <- x %>%
+    
+    # Select variables
     select(
-      -starts_with("diff")
+      otu_id,
+      starts_with("lfc_"),
+      starts_with("p_"),
+      starts_with("pcorr_")
     ) %>%
+    
+    # Long format
     pivot_longer(
       -otu_id,
       names_to = "comparison",
       values_to = "value"
+    ) %>%
+    
+    # Get statistic type and comparison
+    separate(
+      comparison,
+      into = c("statistic", "comparison"),
+      sep = "_",
+      extra = "merge"
+    ) %>%
+    
+    # Wide format
+    pivot_wider(
+      id_cols = c(otu_id, comparison),
+      names_from = "statistic",
+      values_from = "value"
+    )
+  
+  return(tmp1)
+  
+}
+
+#### Function for volcano significance level ####
+
+volcano_sig_label <- function(pval, pcorr.val) {
+  
+  if(pval <= 0.05 & pcorr.val > 0.05) {
+    
+    tmp1 <- "italic(P)<0.05"
+    
+  } else if(pval <= 0.05 & pcorr.val <= 0.05) {
+    
+    tmp1 <- "italic(P[adj.])<0.05"
+    
+  } else {
+    
+    tmp1 <- "italic(n.s)"
+    
+  }
+  
+  return(tmp1)
+  
+}
+
+#### Function to format volcano data ####
+
+format_volcano_data <- function(x) {
+  
+  tmp1 <- x %>%
+    
+    # Calculate log10 P values and add a significance label
+    mutate(
+      log10_p = -1 * log10(p),
+      sig_label = map2_chr(p, pcorr, .f = volcano_sig_label),
+      sig_label = factor(
+        sig_label,
+        levels = c("italic(P[adj.])<0.05", "italic(P)<0.05", "italic(n.s)")
+      )
     )
   
   return(tmp1)
