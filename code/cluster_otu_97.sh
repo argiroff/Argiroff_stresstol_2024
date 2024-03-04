@@ -16,14 +16,14 @@ echo "Obtaining filepaths."
 
 infile1=`echo "$PWD"/"$1"`
 infile2=`echo "$PWD"/"$2"`
-outdir=`echo "$infile1" | sed -E "s/merged_table.qza/otu_97\//"`
+outdir=`echo "$infile1" | sed -E "s/merged_table.qza/otu_97/"`
 
 # Cluster at 97% identify
 progress1=`echo "$infile1" | sed -E "s/\/final_qzas\/merged_table.qza//"`
-progress2=`echo "$infile1" | sed -E "s/(.*\/)//"`
-progress3=`echo "$infile1" | sed -E "s/\/"$progress2"//" | sed -E "s/(.*\/)//"`
+progress1=`echo "$infile1" | sed -E "s/(.*\/)//"`
+progress2=`echo "$infile1" | sed -E "s/\/"$progress1"//" | sed -E "s/(.*\/)//"`
 
-echo "Clustering ""$progress3"" OTUs."
+echo "Clustering ""$progress2"" OTUs."
 
 qiime vsearch cluster-features-de-novo \
   --i-table $infile1 \
@@ -31,7 +31,7 @@ qiime vsearch cluster-features-de-novo \
   --p-perc-identity 0.97 \
   --output-dir $outdir
 
-echo "Finished clustering ""$progress3" OTUs.
+echo "Finished clustering ""$progress2" OTUs.
 
 # Deactivate QIIME2 environment
 echo "Deactivating QIIME2 environment."

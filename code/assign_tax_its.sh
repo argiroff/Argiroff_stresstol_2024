@@ -19,7 +19,12 @@ infile2=`echo "$PWD"/"$2"`
 infile3=`echo "$PWD"/"$3"`
 outdir=`echo "$PWD"/"data/qiime2/final_qzas/ITS/otu_97_taxonomy"`
 
-# Trim with ITSxpress
+if test -d $outdir; then
+  echo "$outdir"" already exists. Removing old directory."
+  rm -r $outdir
+fi
+
+# Assign taxonomy
 progress=`echo "$infile1" | sed -E "s/\/otu_97\/clustered_sequences.qza//" | sed -E "s/(.*\/)//"`
 echo "Classifying ""$1".
 

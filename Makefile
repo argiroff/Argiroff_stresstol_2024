@@ -165,17 +165,17 @@ $(MERGE_SEQS_ITS) : code/merge_repseqs.sh\
 OTU_97_16S=data/qiime2/final_qzas/16S/otu_97/
 
 $(OTU_97_16S) : code/cluster_otu_97.sh\
-		$$(subst otu_97,merged_table.qza,$$@)\
-		$$(subst otu_97,merged_representative_sequences.qza,$$@)
-	code/cluster_otu_97.sh $(subst otu_97,merged_table.qza,$@) $(subst otu_97,merged_representative_sequences.qza,$@)
+		$$(subst otu_97/,merged_table.qza,$$@)\
+		$$(subst otu_97/,merged_representative_sequences.qza,$$@)
+	code/cluster_otu_97.sh $(subst otu_97/,merged_table.qza,$@) $(subst otu_97/,merged_representative_sequences.qza,$@)
 
 #ITS
 OTU_97_ITS=data/qiime2/final_qzas/ITS/otu_97/
 
 $(OTU_97_ITS) : code/cluster_otu_97.sh\
-		$$(subst otu_97,merged_table.qza,$$@)\
-		$$(subst otu_97,merged_representative_sequences.qza,$$@)
-	code/cluster_otu_97.sh $(subst otu_97,merged_table.qza,$@) $(subst otu_97,merged_representative_sequences.qza,$@)
+		$$(subst otu_97/,merged_table.qza,$$@)\
+		$$(subst otu_97/,merged_representative_sequences.qza,$$@)
+	code/cluster_otu_97.sh $(subst otu_97/,merged_table.qza,$@) $(subst otu_97/,merged_representative_sequences.qza,$@)
 
 #### Assign taxonomy ####
 
@@ -207,6 +207,8 @@ qiime2_16s : $(MANIFEST_16S_OUT) $(IMPORT_16S_OUT) $(SUM_16S_OUT)\
 qiime2_its : $(MANIFEST_ITS_OUT) $(IMPORT_ITS_OUT) $(SUM_ITS_OUT)\
 	$(TRIM_ITS_OUT) $(SUM_ITS_TRIM) $(DADA2_ITS) $(SUM_ITS_DADA2)\
 	$(MERGE_TAB_ITS) $(MERGE_SEQS_ITS) $(OTU_97_ITS) $(TAX_ITS)
+
+assign_tax : $(TAX_ITS) $(TAX_16S)
 
 #### Format sequence metadata, 16S ####
 
