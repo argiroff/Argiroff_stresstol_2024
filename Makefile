@@ -17,7 +17,7 @@ $(MANIFEST_16S_OUT) : code/get_manifest.R\
 		$$(dir $$@)reads/
 	code/get_manifest.R $(dir $@)reads/ $@
 
-# ITS
+# ITS  
 PATH_ITS=$(wildcard data/qiime2/ITS/*)
 MANIFEST_ITS_OUT=$(foreach path,$(PATH_ITS),$(path)/manifest.txt)
 
