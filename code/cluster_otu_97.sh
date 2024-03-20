@@ -25,11 +25,14 @@ progress2=`echo "$infile1" | sed -E "s/\/"$progress1"//" | sed -E "s/(.*\/)//"`
 
 echo "Clustering ""$progress2"" OTUs."
 
-qiime vsearch cluster-features-de-novo \
-  --i-table $infile1 \
-  --i-sequences $infile2 \
-  --p-perc-identity 0.97 \
-  --output-dir $outdir
+echo $infile1
+echo $infile2
+
+# qiime vsearch cluster-features-de-novo \
+#   --i-table $infile1 \
+#   --i-sequences $infile2 \
+#   --p-perc-identity 0.97 \
+#   --output-dir $outdir
 
 echo "Finished clustering ""$progress2" OTUs.
 

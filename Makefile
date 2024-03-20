@@ -208,7 +208,8 @@ qiime2_its : $(MANIFEST_ITS_OUT) $(IMPORT_ITS_OUT) $(SUM_ITS_OUT)\
 	$(TRIM_ITS_OUT) $(SUM_ITS_TRIM) $(DADA2_ITS) $(SUM_ITS_DADA2)\
 	$(MERGE_TAB_ITS) $(MERGE_SEQS_ITS) $(OTU_97_ITS) $(TAX_ITS)
 
-assign_tax : $(TAX_ITS) $(TAX_16S)
+assign_tax : $(MERGE_TAB_16S) $(MERGE_SEQS_16S) $(OTU_97_16S)\
+$(MERGE_TAB_ITS) $(MERGE_SEQS_ITS) $(OTU_97_ITS) $(TAX_ITS)#$(TAX_16S) 
 
 #### Format sequence metadata, 16S ####
 

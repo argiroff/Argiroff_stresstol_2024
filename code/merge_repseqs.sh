@@ -14,7 +14,7 @@ source activate /opt/miniconda3/envs/qiime2-2022.8
 echo "Obtaining filepaths."
 
 infiles1=($@) # Rep seqs as an array
-infiles2=() # Empty array
+infiles2=() # Make empty arrys
 
 # Populate empty array with full path names
 for i in ${!infiles1[@]}; do

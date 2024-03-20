@@ -10,7 +10,7 @@
 echo "Activating QIIME2 environment."
 source activate /opt/miniconda3/envs/qiime2-2022.8
 
-# Files
+# Files  
 echo "Obtaining filepaths."
 
 infile1=`echo "$PWD"/"$1"`
